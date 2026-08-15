@@ -1,11 +1,15 @@
 # Wayfarer's Ledger
 
-An original browser-based trading RPG inspired by classic point-and-click
-caravan/trading games. Travel between the frontier cities of a hand-built
-world, buy low and sell high, upgrade your vessel, earn standing with one of
-two rival factions (or neither), and see how your ledger reads when the
-journey ends. Built fresh with HTML5 Canvas and vanilla JavaScript — original
-world, cities, goods, factions, and story throughout.
+An original browser-based, open-world trading RPG inspired by classic
+point-and-click caravan/trading games. Create a character, pick a race and
+class, and set out on a sandbox: trade, fight, or take up a guild's cause in
+whatever order you like. Travel a hand-built world of 17 cities buying low
+and selling high, upgrade your vessel from Worn Boots up to a Land-Ship,
+earn (or spend) standing with four rival guilds, and find your own way to
+one of five endings — including a wealth path that needs no combat or
+guild reputation at all. Built fresh with HTML5 Canvas and vanilla
+JavaScript — original world, cities, goods, guilds, races, classes, and
+story throughout. Eventually intended to ship to Android; see Roadmap.
 
 ![Screenshot placeholder](docs/screenshot-placeholder.png)
 
@@ -30,17 +34,37 @@ npm run lint      # lint the codebase (ESLint)
 ## Tech stack
 
 - Vanilla JavaScript (ES modules), no framework
-- HTML5 Canvas for the world map and rendering
+- HTML5 Canvas for the world map
 - [Vite](https://vitejs.dev/) for dev server and bundling
-- [Vitest](https://vitest.dev/) for unit tests, focused on the economy math
-- Game data (cities, goods, factions, vessels, quests) is plain JSON in
-  `src/data/`, kept separate from game logic so balancing doesn't require
-  code changes
+- [Vitest](https://vitest.dev/) for unit tests (53 tests across economy,
+  combat, guilds/endings, character/leveling, and vessel progression)
+- Game data (cities, goods, guilds, races, classes, spells, vessels,
+  quests, enemies, endings) is plain JSON in `src/data/`, kept separate
+  from game logic so balancing doesn't require code changes
+- Built touch-first from the start (44px+ tap targets, no hover-dependent
+  UI, disabled pinch-zoom/overscroll) since Android is the eventual target
 
 ## Project status
 
-Core loop is playable end-to-end: character creation → travel the world map
-→ trade in cities → upgrade your vessel → take on faction quests → survive
-random road encounters → retire into one of four endings. See
-[`docs/DESIGN.md`](docs/DESIGN.md) for the full design spec and current
-system status, and open issues/PRs for the roadmap.
+The core sandbox loop is playable end-to-end: character creation (race +
+class) → travel the world map → trade in cities (goods and potions) →
+upgrade your vessel through a branching tree → take on guild quests → fight
+common road encounters with round-by-round combat (attack, spells,
+potions, flee) → confront a guild's telegraphed final boss → retire into
+one of five endings, or keep going and try for a different one.
+
+This is Part 2 of a four-part build (see
+[`docs/DESIGN.md`](docs/DESIGN.md) for the full spec and per-system
+status):
+
+1. **Repo setup** — done
+2. **Core game design** — the sandbox loop described above — **current
+   focus, playable end to end**
+3. **Polish pass** — medieval tone/naming, felt combat (damage numbers,
+   hit sounds, pacing), sprite art and animation — **not started**
+4. **Android shipping** — Capacitor wrap, IAP, Play Store listing — **not
+   started**
+
+`docs/DESIGN.md` also tracks known gaps honestly rather than glossing over
+them — e.g. guild-reputation trade perks (toll discounts, black-market
+pricing) are designed but not yet mechanically wired up.
