@@ -1,0 +1,47 @@
+[
+  {
+    "id": "worn_boots",
+    "name": "Worn Boots",
+    "description": "Your own two feet and whatever you can sling over your shoulders. Slow, but it costs nothing.",
+    "cost": 0,
+    "cargoCapacity": 10,
+    "speed": 1,
+    "allowedRouteTypes": ["land"]
+  },
+  {
+    "id": "handcart",
+    "name": "Handcart",
+    "description": "A simple two-wheeled cart. More weight, no faster, but your back will thank you.",
+    "cost": 60,
+    "cargoCapacity": 30,
+    "speed": 1,
+    "allowedRouteTypes": ["land"]
+  },
+  {
+    "id": "ox_wagon",
+    "name": "Ox Wagon",
+    "description": "A sturdy wagon drawn by a pair of oxen. Real cargo capacity, at the cost of needing wide roads.",
+    "cost": 260,
+    "cargoCapacity": 90,
+    "speed": 1.4,
+    "allowedRouteTypes": ["land"]
+  },
+  {
+    "id": "river_barge",
+    "name": "River Barge",
+    "description": "A flat-bottomed barge for river and coastal routes. Fast and roomy, but useless inland.",
+    "cost": 520,
+    "cargoCapacity": 160,
+    "speed": 2.2,
+    "allowedRouteTypes": ["river", "coastal"]
+  },
+  {
+    "id": "ledgerwind_caravan",
+    "name": "The Ledgerwind Caravan",
+    "description": "A grand, guarded caravan train of wagons and pack animals capable of crossing any terrain in the reach. The mark of a wayfarer who has truly arrived.",
+    "cost": 2400,
+    "cargoCapacity": 340,
+    "speed": 2.6,
+    "allowedRouteTypes": ["land", "river", "coastal"]
+  }
+]

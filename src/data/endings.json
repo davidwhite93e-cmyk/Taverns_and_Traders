@@ -1,0 +1,26 @@
+[
+  {
+    "id": "concord_magnate",
+    "title": "The Chartered Magnate",
+    "summary": "You rose through the Ledgerbound Concord to become a chartered magnate, your seal now stamped on manifests from Millhaven to Ironspire. The roads you once walked on foot are patrolled by wagons that answer to you, and the tariff you once paid, you now collect.",
+    "condition": "High wealth and strong standing with the Concord."
+  },
+  {
+    "id": "free_caravan_legend",
+    "title": "The Unbroken Wheel",
+    "summary": "Your name is toasted in every waystation the Free Caravans hold, from Duskrun's dust to Blackfen's mire. You built your fortune outrunning tariffs and trusting your own ledger, and the frontier remembers who never bent the knee to a customs house.",
+    "condition": "High wealth and strong standing with the Free Caravans."
+  },
+  {
+    "id": "independent_wayfarer",
+    "title": "The Ledger of No House",
+    "summary": "You courted neither the Concord nor the Free Caravans, and built your wealth on routes and reputations of your own making. No banner flies over your caravan, and none is needed; the coin in your strongbox answers to nobody but you.",
+    "condition": "High wealth without strong allegiance to either faction."
+  },
+  {
+    "id": "ruined_wanderer",
+    "title": "The Long Road Back",
+    "summary": "Bad trades, worse luck, or a road you should never have taken left your strongbox empty and your cargo gone. You still walk the reach, but as a wayfarer with nothing left to sell but the story of how you lost it all.",
+    "condition": "Low wealth at journey's end, regardless of reputation."
+  }
+]

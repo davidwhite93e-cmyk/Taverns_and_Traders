@@ -1,0 +1,26 @@
+[
+  {
+    "id": "concord",
+    "name": "The Ledgerbound Concord",
+    "tagline": "Order, tariffs, and the sanctity of the contract.",
+    "description": "A coalition of chartered guilds and city magistrates who believe trade should be regulated, taxed, and predictable. The Concord pays well for loyal factors who play by the rules and keeps the roads it controls free of bandits.",
+    "rivalOf": "free_caravans",
+    "startingReputation": 0
+  },
+  {
+    "id": "free_caravans",
+    "name": "The Free Caravans",
+    "tagline": "No toll but the one the road itself collects.",
+    "description": "A loose confederation of independent traders, smugglers, and frontier outriders who reject Concord tariffs. They reward daring and self-reliance, and offer protection to wayfarers willing to run goods the Concord would rather tax or ban.",
+    "rivalOf": "concord",
+    "startingReputation": 0
+  },
+  {
+    "id": "unaligned",
+    "name": "Unaligned Wayfarer",
+    "tagline": "Owe nothing. Answer to no one.",
+    "description": "Not a faction so much as the absence of one. A wayfarer who courts neither the Concord nor the Free Caravans walks a harder, lonelier road, but arrives beholden to nobody.",
+    "rivalOf": null,
+    "startingReputation": 0
+  }
+]

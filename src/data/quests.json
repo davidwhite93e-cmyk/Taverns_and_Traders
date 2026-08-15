@@ -1,0 +1,62 @@
+[
+  {
+    "id": "tariff_run",
+    "factionId": "concord",
+    "requiredReputation": 0,
+    "title": "Tariff Run",
+    "description": "Carry a sealed manifest of taxed goods between two Concord customs houses without breaking the seal.",
+    "rewardGold": 80,
+    "reputationDelta": 10,
+    "rivalReputationDelta": 0
+  },
+  {
+    "id": "ledger_audit",
+    "factionId": "concord",
+    "requiredReputation": 20,
+    "title": "Ledger Audit",
+    "description": "Escort a Concord auditor through contested territory to inspect a border warehouse.",
+    "rewardGold": 150,
+    "reputationDelta": 15,
+    "rivalReputationDelta": -5
+  },
+  {
+    "id": "concord_charter",
+    "factionId": "concord",
+    "requiredReputation": 50,
+    "title": "Concord Charter",
+    "description": "Petition for a chartered factor's seal, binding your caravan to the Concord's protection and its rules.",
+    "rewardGold": 300,
+    "reputationDelta": 20,
+    "rivalReputationDelta": -10
+  },
+  {
+    "id": "blockade_run",
+    "factionId": "free_caravans",
+    "requiredReputation": 0,
+    "title": "Blockade Run",
+    "description": "Slip a wagon of untaxed goods past a Concord checkpoint under cover of night.",
+    "rewardGold": 100,
+    "reputationDelta": 10,
+    "rivalReputationDelta": -5
+  },
+  {
+    "id": "smugglers_favor",
+    "factionId": "free_caravans",
+    "requiredReputation": 20,
+    "title": "Smuggler's Favor",
+    "description": "Deliver a Free Caravans courier's parcel to Redgate without asking what's inside.",
+    "rewardGold": 180,
+    "reputationDelta": 15,
+    "rivalReputationDelta": -10
+  },
+  {
+    "id": "caravan_oath",
+    "factionId": "free_caravans",
+    "requiredReputation": 50,
+    "title": "Caravan Oath",
+    "description": "Swear the Free Caravans' oath before the outrider captains at Cinderhold, forsaking any Concord charter.",
+    "rewardGold": 320,
+    "reputationDelta": 20,
+    "rivalReputationDelta": -15
+  }
+]
