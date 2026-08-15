@@ -1,10 +1,14 @@
 import { loadGuilds, getReputation } from '../guilds/reputation.js';
 import { getQuestsForGuild, getQuestStatus } from '../guilds/quests.js';
 import { createBossEncounter } from '../combat/combat.js';
+import { guildSigilSvg } from './guildSigils.js';
+import { formatQuestReward } from './format.js';
 import { MapScreen } from './MapScreen.js';
 import { CombatScreen } from './CombatScreen.js';
 
 const guilds = loadGuilds();
+
+const TIER_LABELS = { early: 'Opening', mid: 'Advanced', final: 'Final' };
 
 function repBar(reputation) {
   const pct = ((reputation + 100) / 200) * 100;
@@ -52,11 +56,11 @@ export const GuildScreen = {
               <div class="quest-card ${isFinal ? 'final' : ''} ${status === 'locked' ? 'locked' : ''}">
                 <div class="row spread">
                   <strong>${quest.title}${isFinal ? ' &mdash; Final Commission' : ''}</strong>
-                  <span class="subtle">${quest.tier}</span>
+                  <span class="subtle">${TIER_LABELS[quest.tier] || quest.tier}</span>
                 </div>
                 <p class="subtle">${quest.description}</p>
                 <div class="row spread">
-                  <span class="subtle">Reward: ${quest.rewardGold}g, ${quest.rewardXp} xp, +${quest.reputationDelta} rep</span>
+                  <span class="subtle">${formatQuestReward(quest)}</span>
                   ${actionHtml}
                 </div>
               </div>`;
@@ -66,7 +70,7 @@ export const GuildScreen = {
         return `
           <div class="panel">
             <div class="row spread">
-              <h3>${guild.name} <span class="subtle">(${guild.difficulty})</span></h3>
+              <h3><span class="sigil">${guildSigilSvg(guild.id, 26)}</span>${guild.name} <span class="subtle">(${guild.difficulty})</span></h3>
               <span class="subtle">${rep}</span>
             </div>
             <p class="subtle">${guild.tagline}</p>
@@ -80,7 +84,7 @@ export const GuildScreen = {
     uiRoot.innerHTML = `
       <div class="panel">
         <h2>Guild Hall</h2>
-        <p class="subtle">Reputation ranges from -100 to 100. Completing a guild's final commission ends that
+        <p class="subtle">Standing ranges from -100 to 100. Completing a guild's final commission ends that
         guild's story and resolves the run.</p>
       </div>
       ${guildPanels}
