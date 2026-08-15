@@ -1,0 +1,170 @@
+:root {
+  --bg: #0d1016;
+  --panel: #161b23;
+  --panel-border: #2a323f;
+  --text: #e8e8e8;
+  --text-dim: #9aa4b2;
+  --accent: #f4d35e;
+  --danger: #d9534f;
+  --success: #5c8a4a;
+  font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+#app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  background: #12161c;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+#ui-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.subtle {
+  color: var(--text-dim);
+  font-size: 0.9em;
+}
+
+button {
+  font-family: inherit;
+  background: #223;
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+input[type='text'], input[type='number'] {
+  font-family: inherit;
+  background: #0d1016;
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row.spread {
+  justify-content: space-between;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  background: #223;
+  border: 1px solid var(--panel-border);
+}
+
+.badge.produce {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.badge.demand {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.city-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.city-list button {
+  text-align: left;
+}
+
+.log {
+  max-height: 220px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.85em;
+  background: #0d1016;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.hp-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: #333;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+.hp-bar-fill {
+  height: 100%;
+  background: var(--success);
+}
+
+.hp-bar-fill.enemy {
+  background: var(--danger);
+}
