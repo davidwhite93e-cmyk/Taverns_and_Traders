@@ -14,6 +14,13 @@ import { createNewGame } from '../src/state/GameState.js';
 
 const noNoise = () => 0.5; // rollDamage's (rng()-0.5) term becomes 0: fully deterministic damage
 
+// rollDamage draws twice per call: once for variance, once for the crit
+// check. A queue lets a test pin exactly which draws land as crits.
+function queueRng(values) {
+  let i = 0;
+  return () => values[Math.min(i++, values.length - 1)];
+}
+
 function weakEnemy() {
   return { name: 'Training Dummy', tier: 'common', attack: 5, defense: 0, hp: 50, loot: 20, xpReward: 5, currentHp: 50 };
 }
@@ -73,6 +80,61 @@ describe('combat session', () => {
     applyAmbushStrike(session, noNoise);
     expect(session.playerHp).toBeLessThan(hpBefore);
     expect(session.round).toBe(0); // ambush strike is not a player round
+  });
+});
+
+describe('critical hits', () => {
+  it('a crit deals more damage than a non-crit with identical variance', () => {
+    const state = createNewGame('Test', 'human', 'warrior');
+
+    const critSession = createCombatSession(state, weakEnemy());
+    playerAttack(critSession, queueRng([0.5, 0.01, 0.5, 0.99])); // player crits (0.01 < 0.15 chance), enemy doesn't
+    const critDamage = critSession.log[0].amount;
+    expect(critSession.log[0].isCrit).toBe(true);
+
+    const plainSession = createCombatSession(state, weakEnemy());
+    playerAttack(plainSession, queueRng([0.5, 0.99, 0.5, 0.99])); // neither side crits
+    const plainDamage = plainSession.log[0].amount;
+    expect(plainSession.log[0].isCrit).toBe(false);
+
+    expect(critDamage).toBeGreaterThan(plainDamage);
+  });
+});
+
+describe('structured combat log', () => {
+  it('records actor/type/amount/isCrit/text and running HP snapshots on every entry', () => {
+    const state = createNewGame('Test', 'human', 'warrior');
+    const session = createCombatSession(state, weakEnemy());
+    playerAttack(session, queueRng([0.5, 0.99, 0.5, 0.99])); // non-lethal: player hit + enemy retaliation
+
+    expect(session.log).toHaveLength(2);
+
+    const [playerEntry, enemyEntry] = session.log;
+    expect(playerEntry).toMatchObject({ actor: 'player', type: 'attack', isCrit: false });
+    expect(playerEntry.amount).toBeGreaterThan(0);
+    expect(typeof playerEntry.text).toBe('string');
+    expect(playerEntry.text.length).toBeGreaterThan(0);
+    expect(playerEntry.enemyHpAfter).toBe(session.enemy.hp - playerEntry.amount);
+    expect(playerEntry.playerHpAfter).toBe(session.playerMaxHp); // unchanged by the player's own swing
+
+    expect(enemyEntry).toMatchObject({ actor: 'enemy', type: 'attack', isCrit: false });
+    expect(enemyEntry.amount).toBeGreaterThan(0);
+    expect(enemyEntry.playerHpAfter).toBe(session.playerMaxHp - enemyEntry.amount);
+    expect(enemyEntry.enemyHpAfter).toBe(playerEntry.enemyHpAfter); // unchanged by the enemy's own swing
+
+    // final session state matches the last entry's snapshot
+    expect(session.playerHp).toBe(enemyEntry.playerHpAfter);
+    expect(session.enemyHp).toBe(enemyEntry.enemyHpAfter);
+  });
+
+  it('a heal entry records the actual amount restored, capped at max HP', () => {
+    const state = createNewGame('Test', 'human', 'warrior');
+    const session = createCombatSession(state, weakEnemy());
+    session.playerHp = session.playerMaxHp - 5;
+    usePotionEffect(session, { type: 'heal', magnitude: 999 }, queueRng([0.5, 0.99]));
+    const healEntry = session.log[0];
+    expect(healEntry.type).toBe('heal');
+    expect(healEntry.amount).toBe(5); // only the missing 5 HP, not the full 999 magnitude
   });
 });
 
