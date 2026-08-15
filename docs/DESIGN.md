@@ -19,12 +19,14 @@ worked in order:
 
 1. **Repo setup** — done.
 2. **Core game design spec** — the sandbox loop: world, economy, vessels,
-   races/classes, guilds/quests/bosses, combat, endings. **This phase is
-   the current focus and what this document describes.**
+   races/classes, guilds/quests/bosses, combat, endings. **Done, playable
+   end to end.**
 3. **Polish pass** — medieval tone/naming pass, felt combat (damage
    numbers, hit sounds, pacing), sprite art and animation (caravan travel
-   motion, NPC walk cycles, combat sprite states). **Not started.** Gated
-   behind Part 2 being fully playable end to end, per the brief.
+   motion, NPC walk cycles, combat sprite states). **In progress.** Started
+   with the tone/naming pass and the animation/sprite groundwork (see
+   Visual style guide below); felt-combat feedback, background NPC loops,
+   and ambient audio have not been started yet.
 4. **Android shipping** — Capacitor wrap, touch/mobile hardening, IAP,
    signing, Play Console listing. **Not started.** Gated behind Part 3.
 
@@ -49,8 +51,19 @@ started; no Capacitor wrapping, native builds, or IAP work exists yet.
 | Combat | Implemented (round-by-round, spells, potions, ambush) |
 | Endings | Implemented (5 endings: 4 guild + wealth) |
 | Save/load | Implemented (localStorage) |
-| Medieval tone/naming pass | Not started (Part 3) |
-| Sprite art / animation | Not started (Part 3) — currently DOM/canvas-shape UI only |
+| Medieval tone/naming pass | Implemented (see Tone & naming below) |
+| Parchment/wood visual language | Implemented (palette, panel styling, heading treatment) |
+| Guild sigils | Implemented (procedural SVG, one per guild) |
+| Animation system (AnimatedSprite) | Implemented |
+| Procedural vessel sprites | Implemented (geometric, all 7 vessel tiers, rotating wheels/leg cycle) |
+| Caravan travel animation on the map | Implemented |
+| Combat hit feedback (damage numbers, shake, sound, punchy log lines) | Not started |
+| Background NPC loops in cities | Not started |
+| Combat sprite states (idle/attack/hit/defeat) for enemies/bosses | Not started — combat is still text/log driven, no on-screen combatant sprites yet |
+| Day/night or weather tint on the map | Not started |
+| Rotating one-line flavor text per city visit | Not started |
+| Ambient audio | Not started |
+| Escort names/portraits, wounding/loss | Not started |
 | Android/Capacitor build | Not started (Part 4) |
 | Guild-reputation trade perks (toll discounts, black-market prices, etc.) | **Documented, not mechanically implemented.** Reputation currently gates quest access only; the flavor perks each guild's design describes (safer routes, black-market pricing, better escorts/spells) are not yet wired into the economy or combat systems. Flagged here rather than silently skipped. |
 
@@ -246,6 +259,109 @@ Game state is a single JSON-serializable object (player — including race,
 class, level, XP, mana, spells, combat stats, cargo, owned vessels — plus
 market, reputation, completed quests, and `achievedEnding`), persisted to
 `localStorage` after every meaningful action (`src/state/GameState.js`).
+
+## Visual style guide
+
+The look is "an old ledger open on a dark wood desk" — dark-wood shell
+around parchment-colored panels, sepia ink text, gold-leaf accents. Defined
+in `src/ui/style.css` as CSS custom properties, and mirrored by hand in the
+canvas map (`src/world/map.js`) since canvas drawing can't read CSS
+variables:
+
+| Token | Hex | Use |
+| --- | --- | --- |
+| `--bg` | `#1c130c` | Outer page background, map canvas background |
+| `--panel` | `#ecdfc0` | Parchment panel background |
+| `--panel-alt` | `#e2d1a4` | Nested cards, button fill |
+| `--panel-border` | `#8a6a3f` | Sepia/leather borders |
+| `--text` | `#2b1d10` | Ink |
+| `--text-dim` | `#6b5738` | Faded ink (`.subtle`) |
+| `--accent` / `--accent-strong` | `#a8791f` / `#7a4a12` | Gold leaf — headings, highlights, current-location marker |
+| `--danger` | `#7a2f22` | Oxblood/wax-seal red — enemy HP, defeat states |
+| `--success` | `#4f6b3a` | Moss green — player HP, "produces" badges |
+
+**Fonts:** no external font is fetched — self-contained on purpose, since
+this is meant to eventually ship inside an Android WebView and a failed/slow
+web-font load would be a worse look than a good system stack. Body text
+uses a serif stack (`Palatino Linotype` / `Book Antiqua` / Georgia / Times
+New Roman). Headings lean more "engraved" via CSS alone: `font-variant:
+small-caps`, wider `letter-spacing`, and a soft highlight `text-shadow` on
+`h1`, rather than a bundled blackletter display font. Sourcing an actual
+period display font (self-hosted, CC0-licensed) is a reasonable follow-up
+if a future pass wants more visual distinctiveness, but isn't done.
+
+**Guild sigils:** one small original SVG icon per guild
+(`src/ui/guildSigils.js`), matching each guild's `sigil` flavor text in
+`guilds.json` — e.g. Enforcers get a bronze disc inside a dashed "broken
+chain" ring. 100x100 viewBox, rendered at 26–28px.
+
+## Animation & sprite approach
+
+There's no image-art pipeline in this project (no way to hand-draw or
+generate real sprite sheets from this environment), so per the brief's own
+fallback guidance, motion is built from **procedural, geometric canvas
+drawing** rather than bitmap frames — flat shapes with a clear silhouette,
+matching the "simple geometric/procedural" art option the original brief
+explicitly allows.
+
+- **`src/engine/AnimatedSprite.js`** — a small frame-timing driver
+  (`frameCount`, `frameDuration`, `loop`) that outputs a `currentFrame`
+  index on `update(dt)`. It doesn't know about images; it's the same timing
+  role a sprite-sheet player would have, just feeding a procedural drawer
+  instead of a frame lookup.
+- **`src/world/vesselSprites.js`** — one draw function per vessel tier
+  (`drawVessel(ctx, vesselId, x, y, { animTimeSec, facingLeft, scale })`),
+  built from canvas primitives. Wheels rotate continuously via a canvas
+  `rotate()` transform tied to elapsed time (cheap, smooth, no per-frame
+  art needed, per the brief's suggested technical approach); Worn
+  Boots/Horse step through a small discrete leg-cycle (4-frame, ~0.12s per
+  frame) the same way a hand-drawn walk cycle would. All 7 tiers (Worn
+  Boots, Horse, Hand Cart, Horse Cart, Covered Wagon, Armored Wagon,
+  Land-Ship) have a distinct silhouette.
+- **Travel animation** — `src/ui/MapScreen.js` now animates the trip
+  instead of jumping the player to the destination on click. On travel,
+  `ScreenManager.update(dt)` (wired from `GameLoop` in `main.js`) advances
+  an elapsed-time counter; `draw()` interpolates the vessel's position
+  along the route's polyline by arc length (`world/map.js#pointAlongPath`,
+  walked at constant visual speed across segments of very different
+  length) and calls `drawVessel`. Duration is a short, fixed real-time
+  window (0.9–2.6s scaled gently by hop count) — deliberately decoupled
+  from in-game travel days, which can be large; the animation is a
+  presentation beat, not a real-time simulation of the journey. Map
+  interaction (new travel clicks) is blocked while a trip is animating.
+- **Not yet built:** combat has no on-screen combatant sprites (still a
+  text/log-driven exchange — see the Status table), and there are no
+  background NPC walk-cycle loops in cities yet. Both would reuse
+  `AnimatedSprite` the same way vessels do.
+
+## Tone & naming pass
+
+UI copy was re-passed for period flavor without touching internal state
+field names (renaming `state.player.gold` itself would be a large,
+purely-cosmetic refactor for no functional gain):
+
+- **Currency:** displayed as "crowns" (`formatCoin()` in `src/ui/format.js`)
+  instead of a bare `g` suffix — abbreviated `NNNcr` in tight UI (tables,
+  buttons), spelled out ("NNN crowns") in fuller sentences. The state field
+  is still `gold`.
+- **XP → "renown"**, **reputation → "standing"** in all player-facing text
+  (`formatQuestReward()` in the same file). State fields are still `xp` and
+  `reputation`.
+- **"Quest" → "commission"** — quest-related buttons read "Accept
+  Commission" / "Confront" / "Final Commission"; the Guild Hall's tier
+  labels read "Opening" / "Advanced" / "Final" instead of the raw
+  `early`/`mid`/`final` tier ids.
+- Screen/button labels: "Trade Here" → "Enter the Market", "Inventory &
+  Vessel" → "Cargo & Caravan", "Retire & Settle Accounts" → "Retire &
+  Settle the Ledger" (a nod to the game's own title), "Begin a New
+  Journey" → "Begin a New Ledger", "Attack" → "Strike", "HP"/"MP" → spelled
+  out as "Health"/"Mana", goods-table header "Good" → "Ware", vessel-table
+  headers "Cargo/Speed/Defense/Routes" → "Hold/Pace/Guard/Terrain".
+
+Not done in this pass: a rotating pool of one-line flavor text per city
+visit (still just each city's single fixed `description`), and NPC
+dialogue (there isn't any yet — Guild Hall/City copy is narration, not
+character dialogue).
 
 ## A bug worth remembering
 

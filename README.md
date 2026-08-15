@@ -58,10 +58,13 @@ This is Part 2 of a four-part build (see
 status):
 
 1. **Repo setup** — done
-2. **Core game design** — the sandbox loop described above — **current
-   focus, playable end to end**
-3. **Polish pass** — medieval tone/naming, felt combat (damage numbers,
-   hit sounds, pacing), sprite art and animation — **not started**
+2. **Core game design** — the sandbox loop described above — **done,
+   playable end to end**
+3. **Polish pass** — medieval tone/naming pass and animation/sprite
+   groundwork are **in progress** (parchment UI, "crowns"/"renown"/
+   "standing" copy pass, procedural vessel sprites, an animated caravan
+   that travels the map in real time); felt-combat feedback, background
+   NPC loops, and ambient audio are **not started**
 4. **Android shipping** — Capacitor wrap, IAP, Play Store listing — **not
    started**
 
