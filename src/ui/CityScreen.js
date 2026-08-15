@@ -6,6 +6,7 @@ import { buyGood, sellGood, cargoTotal, effectiveCargoCapacity } from '../econom
 import { saveGame } from '../state/GameState.js';
 import { getAvailableQuests, completeQuest } from '../guilds/quests.js';
 import { loadGuilds } from '../guilds/reputation.js';
+import { formatCoin, formatQuestReward } from './format.js';
 import { MapScreen } from './MapScreen.js';
 
 const goods = loadGoods();
@@ -45,7 +46,7 @@ export const CityScreen = {
         return `
           <tr>
             <td>${good.name} ${tag}</td>
-            <td>${price}g</td>
+            <td>${formatCoin(price)}</td>
             <td>${owned}</td>
             <td>
               <div class="row">
@@ -71,8 +72,8 @@ export const CityScreen = {
                 </div>
                 <p class="subtle">${quest.description}</p>
                 <div class="row spread">
-                  <span class="subtle">Reward: ${quest.rewardGold}g, ${quest.rewardXp} xp, +${quest.reputationDelta} reputation</span>
-                  <button data-quest="${quest.id}">Undertake</button>
+                  <span class="subtle">${formatQuestReward(quest)}</span>
+                  <button data-quest="${quest.id}">Accept Commission</button>
                 </div>
               </div>`;
           })
@@ -83,11 +84,11 @@ export const CityScreen = {
       <div class="panel">
         <div class="row spread">
           <h2>${city.name} Market</h2>
-          <span class="subtle">${load}/${capacity} cargo &middot; ${state.player.gold}g</span>
+          <span class="subtle">${load}/${capacity} hold &middot; ${formatCoin(state.player.gold)}</span>
         </div>
         ${this.message ? `<p class="subtle">${this.message}</p>` : ''}
         <table>
-          <thead><tr><th>Good</th><th>Price</th><th>Held</th><th>Trade</th></tr></thead>
+          <thead><tr><th>Ware</th><th>Price</th><th>Held</th><th>Trade</th></tr></thead>
           <tbody>${goodsRows}</tbody>
         </table>
       </div>

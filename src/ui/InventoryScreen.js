@@ -2,6 +2,7 @@ import { getVessel, loadVessels, purchaseVessel, isVesselUnlocked, vesselCost } 
 import { findGood } from '../economy/goods.js';
 import { cargoTotal, effectiveCargoCapacity } from '../economy/trade.js';
 import { saveGame } from '../state/GameState.js';
+import { formatCoin } from './format.js';
 import { MapScreen } from './MapScreen.js';
 
 const ESCORT_BASE_COST = 60;
@@ -40,11 +41,11 @@ export const InventoryScreen = {
         let action;
         if (owned) action = '<span class="badge produce">current</span>';
         else if (!unlocked) action = '<span class="subtle">locked</span>';
-        else action = `<button data-vessel="${v.id}" ${affordable ? '' : 'disabled'}>Buy (${cost}g)</button>`;
+        else action = `<button data-vessel="${v.id}" ${affordable ? '' : 'disabled'}>Buy (${formatCoin(cost)})</button>`;
         return `
           <tr>
             <td>${v.name}</td>
-            <td>${cost}g</td>
+            <td>${formatCoin(cost)}</td>
             <td>${v.cargoCapacity}</td>
             <td>${v.speed}</td>
             <td>${v.defenseRating}</td>
@@ -62,13 +63,13 @@ export const InventoryScreen = {
       <div class="panel">
         <h2>Cargo Hold</h2>
         <p class="subtle">${load}/${capacity} carried aboard the ${vessel.name}</p>
-        <table><thead><tr><th>Good</th><th>Quantity</th></tr></thead><tbody>${cargoRows}</tbody></table>
+        <table><thead><tr><th>Ware</th><th>Quantity</th></tr></thead><tbody>${cargoRows}</tbody></table>
       </div>
       <div class="panel">
-        <h2>Escorts</h2>
+        <h2>Retinue</h2>
         <p class="subtle">${state.player.combat.escorts}/${MAX_ESCORTS} hired swords, boosting your attack and defense in a fight.</p>
         <button id="hire-btn" ${escortsMaxed || !escortAffordable ? 'disabled' : ''}>
-          ${escortsMaxed ? 'Escort roster full' : `Hire an Escort (${escortCost}g)`}
+          ${escortsMaxed ? 'Retinue full' : `Hire a Sword (${formatCoin(escortCost)})`}
         </button>
       </div>
       <div class="panel">
@@ -76,7 +77,7 @@ export const InventoryScreen = {
         ${this.message ? `<p class="subtle">${this.message}</p>` : ''}
         <p class="subtle">${vessel.description}</p>
         <table>
-          <thead><tr><th>Vessel</th><th>Cost</th><th>Cargo</th><th>Speed</th><th>Defense</th><th>Routes</th><th></th></tr></thead>
+          <thead><tr><th>Vessel</th><th>Cost</th><th>Hold</th><th>Pace</th><th>Guard</th><th>Terrain</th><th></th></tr></thead>
           <tbody>${vesselRows}</tbody>
         </table>
       </div>

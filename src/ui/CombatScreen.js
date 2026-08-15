@@ -11,6 +11,7 @@ import { getSpell } from '../combat/spells.js';
 import { findGood } from '../economy/goods.js';
 import { saveGame } from '../state/GameState.js';
 import { completeFinalQuest } from '../guilds/quests.js';
+import { formatCoin } from './format.js';
 import { CityScreen } from './CityScreen.js';
 import { EndingScreen } from './EndingScreen.js';
 
@@ -55,7 +56,7 @@ export const CombatScreen = {
       if (this.phase === 'resolved') {
         const outcomeText =
           session.outcome === 'victory'
-            ? `Victory! You drive them off${isBoss ? '' : ` and recover ${encounter.loot}g in salvage`}.`
+            ? `Victory! You drive them off${isBoss ? '' : ` and recover ${formatCoin(encounter.loot, { long: true })} in salvage`}.`
             : session.outcome === 'fled'
               ? 'You break off and put distance behind you.'
               : 'You are forced to retreat, losing some gold in the scramble.';
@@ -89,7 +90,7 @@ export const CombatScreen = {
       .map(
         (spell) => `
         <button data-spell="${spell.id}" ${player.mana < spell.manaCost ? 'disabled' : ''}>
-          ${spell.name} (${spell.manaCost} mp)
+          ${spell.name} (${spell.manaCost} mana)
         </button>`
       )
       .join('');
@@ -103,17 +104,17 @@ export const CombatScreen = {
     return `
       <div class="row spread">
         <div>
-          <div class="subtle">You (${session.playerHp}/${session.playerMaxHp} HP)${player.maxMana ? ` &middot; ${player.mana}/${player.maxMana} MP` : ''}</div>
+          <div class="subtle">You (${session.playerHp}/${session.playerMaxHp} Health)${player.maxMana ? ` &middot; ${player.mana}/${player.maxMana} Mana` : ''}</div>
           <div class="hp-bar"><div class="hp-bar-fill" style="width:${(session.playerHp / session.playerMaxHp) * 100}%"></div></div>
         </div>
         <div>
-          <div class="subtle">${session.enemy.name} (${session.enemyHp}/${session.enemy.hp} HP)</div>
+          <div class="subtle">${session.enemy.name} (${session.enemyHp}/${session.enemy.hp} Health)</div>
           <div class="hp-bar"><div class="hp-bar-fill enemy" style="width:${(session.enemyHp / session.enemy.hp) * 100}%"></div></div>
         </div>
       </div>
       <div class="log" style="margin-top:10px;">${logLines}</div>
       <div class="row" style="margin-top:12px;">
-        <button id="attack-btn">Attack</button>
+        <button id="attack-btn">Strike</button>
         ${spellButtons}
         ${potionButtons}
         <button id="flee-btn">Attempt to Flee</button>

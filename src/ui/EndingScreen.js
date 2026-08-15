@@ -2,6 +2,7 @@ import { computeEnding, WEALTH_ENDING_GOLD } from '../guilds/endings.js';
 import { loadGuilds, getReputation } from '../guilds/reputation.js';
 import { getQuestsForGuild } from '../guilds/quests.js';
 import { clearSavedGame } from '../state/GameState.js';
+import { formatCoin } from './format.js';
 import { CharacterCreationScreen } from './CharacterCreationScreen.js';
 import { MapScreen } from './MapScreen.js';
 
@@ -26,9 +27,9 @@ export const EndingScreen = {
         <div class="panel">
           <h1>${ending.title}</h1>
           <p>${ending.summary}</p>
-          <p class="subtle">Final ledger: ${state.player.gold}g &middot; Level ${state.player.level} &middot;
+          <p class="subtle">Final ledger: ${formatCoin(state.player.gold, { long: true })} &middot; Level ${state.player.level} &middot;
           ${state.daysElapsed} days on the road</p>
-          <button id="new-game-btn">Begin a New Journey</button>
+          <button id="new-game-btn">Begin a New Ledger</button>
         </div>
       `;
       uiRoot.querySelector('#new-game-btn').addEventListener('click', () => {
@@ -59,7 +60,7 @@ export const EndingScreen = {
         <p>You haven't yet reached one of the five endings. Every path is still open:</p>
         <ul>
           ${progressRows}
-          <li><strong>Wealth:</strong> ${state.player.gold} / ${WEALTH_ENDING_GOLD} gold, through trade alone</li>
+          <li><strong>Wealth:</strong> ${formatCoin(state.player.gold, { long: true })} / ${formatCoin(WEALTH_ENDING_GOLD, { long: true })}, through trade alone</li>
         </ul>
         <button id="back-btn">Back to the Road</button>
       </div>
