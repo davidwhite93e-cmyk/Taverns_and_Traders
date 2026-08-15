@@ -11,7 +11,7 @@ const screenManager = new ScreenManager({ canvas, uiRoot, context });
 
 const loop = new GameLoop({
   update: () => {},
-  render: () => screenManager.render(ctx, canvas),
+  render: () => screenManager.draw(ctx, canvas),
 });
 
 screenManager.goTo(CharacterCreationScreen);

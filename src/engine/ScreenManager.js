@@ -25,10 +25,13 @@ export class ScreenManager {
     }
   }
 
-  render(ctx, canvas) {
+  // Per-frame canvas hook, deliberately NOT named `render` — screens each have
+  // their own DOM-rebuild method (by convention, `renderPanel`), and naming
+  // this the same as that would make every such method fire ~60x/second.
+  draw(ctx, canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (this.current && typeof this.current.render === 'function') {
-      this.current.render(ctx, canvas);
+    if (this.current && typeof this.current.draw === 'function') {
+      this.current.draw(ctx, canvas);
     }
   }
 }

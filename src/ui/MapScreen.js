@@ -4,9 +4,10 @@ import { getVessel } from '../world/vessels.js';
 import { driftMarket } from '../economy/market.js';
 import { loadGoods } from '../economy/goods.js';
 import { saveGame } from '../state/GameState.js';
-import { createEncounter } from '../combat/combat.js';
+import { createEncounter, rollAmbush } from '../combat/combat.js';
 import { CityScreen } from './CityScreen.js';
 import { InventoryScreen } from './InventoryScreen.js';
+import { GuildScreen } from './GuildScreen.js';
 import { EndingScreen } from './EndingScreen.js';
 import { CombatScreen } from './CombatScreen.js';
 
@@ -53,11 +54,12 @@ export const MapScreen = {
       <div class="panel">
         <div class="row spread">
           <h2>${city.name}</h2>
-          <span class="subtle">Day ${state.daysElapsed} &middot; ${state.player.gold}g &middot; ${vessel.name}</span>
+          <span class="subtle">Lv.${state.player.level} ${state.player.name} &middot; Day ${state.daysElapsed} &middot; ${state.player.gold}g &middot; ${vessel.name}</span>
         </div>
         <p>${city.description}</p>
         <div class="row">
           <button id="enter-city-btn">Trade Here</button>
+          <button id="guild-btn">Guild Hall</button>
           <button id="inventory-btn">Inventory &amp; Vessel</button>
           <button id="retire-btn">Retire &amp; Settle Accounts</button>
         </div>
@@ -73,6 +75,9 @@ export const MapScreen = {
     });
     uiRoot.querySelector('#enter-city-btn').addEventListener('click', () => {
       this.screenManager.goTo(CityScreen);
+    });
+    uiRoot.querySelector('#guild-btn').addEventListener('click', () => {
+      this.screenManager.goTo(GuildScreen);
     });
     uiRoot.querySelector('#inventory-btn').addEventListener('click', () => {
       this.screenManager.goTo(InventoryScreen);
@@ -96,15 +101,17 @@ export const MapScreen = {
     state.currentCityId = destCityId;
 
     let encounter = null;
+    let isAmbush = false;
     const encounterRoll = 1 - Math.pow(1 - ENCOUNTER_CHANCE_PER_DAY, days);
     if (Math.random() < encounterRoll) {
       encounter = createEncounter();
+      isAmbush = rollAmbush(state.player.ambushAvoidance);
     }
 
     saveGame(state);
 
     if (encounter) {
-      this.screenManager.goTo(CombatScreen, { encounter });
+      this.screenManager.goTo(CombatScreen, { encounter, isAmbush });
     } else {
       this.screenManager.goTo(CityScreen);
     }
@@ -112,7 +119,7 @@ export const MapScreen = {
 
   unmount() {},
 
-  render(ctx, canvas) {
+  draw(ctx, canvas) {
     const state = this.context?.state;
     if (!state) return;
     drawWorldMap(ctx, canvas, {

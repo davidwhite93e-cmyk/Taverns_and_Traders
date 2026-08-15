@@ -12,12 +12,25 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
 }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 #app {
@@ -63,11 +76,13 @@ h1, h2, h3 {
 
 button {
   font-family: inherit;
+  font-size: 1em;
   background: #223;
   color: var(--text);
   border: 1px solid var(--panel-border);
   border-radius: 4px;
-  padding: 8px 14px;
+  padding: 10px 16px;
+  min-height: 44px;
   cursor: pointer;
 }
 
@@ -82,11 +97,13 @@ button:disabled {
 
 input[type='text'], input[type='number'] {
   font-family: inherit;
+  font-size: 1em;
   background: #0d1016;
   color: var(--text);
   border: 1px solid var(--panel-border);
   border-radius: 4px;
   padding: 6px 8px;
+  min-height: 44px;
   width: 100%;
 }
 
@@ -167,4 +184,73 @@ th, td {
 
 .hp-bar-fill.enemy {
   background: var(--danger);
+}
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.pick-card {
+  text-align: left;
+  padding: 10px;
+  height: auto;
+  white-space: normal;
+  border-width: 1px;
+}
+
+.pick-card.selected {
+  border-color: var(--accent);
+  background: #2a2410;
+}
+
+.pick-card strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.rep-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.rep-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: #333;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  position: relative;
+}
+
+.rep-bar-fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.rep-bar-mid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.quest-card {
+  padding: 10px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+.quest-card.final {
+  border-color: var(--accent);
+}
+
+.quest-card.locked {
+  opacity: 0.55;
 }

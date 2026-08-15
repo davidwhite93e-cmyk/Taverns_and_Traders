@@ -2,14 +2,14 @@ import { getCity } from '../world/world.js';
 import { getVessel } from '../world/vessels.js';
 import { loadGoods } from '../economy/goods.js';
 import { getPrice } from '../economy/market.js';
-import { buyGood, sellGood, cargoTotal } from '../economy/trade.js';
+import { buyGood, sellGood, cargoTotal, effectiveCargoCapacity } from '../economy/trade.js';
 import { saveGame } from '../state/GameState.js';
-import { getAvailableQuests, completeQuest } from '../factions/quests.js';
-import { loadFactions } from '../factions/reputation.js';
+import { getAvailableQuests, completeQuest } from '../guilds/quests.js';
+import { loadGuilds } from '../guilds/reputation.js';
 import { MapScreen } from './MapScreen.js';
 
 const goods = loadGoods();
-const factions = loadFactions();
+const guilds = loadGuilds();
 
 export const CityScreen = {
   mount({ uiRoot, screenManager, context }) {
@@ -18,6 +18,8 @@ export const CityScreen = {
     this.screenManager = screenManager;
     this.context = context;
     this.message = '';
+    // resting in a city restores a mage's mana
+    context.state.player.mana = context.state.player.maxMana;
     this.renderPanel();
   },
 
@@ -27,6 +29,7 @@ export const CityScreen = {
     const city = getCity(state.currentCityId);
     const vessel = getVessel(state.player.vesselId);
     const load = cargoTotal(state.player.cargo);
+    const capacity = effectiveCargoCapacity(vessel, state.player);
 
     const goodsRows = goods
       .map((good) => {
@@ -36,7 +39,9 @@ export const CityScreen = {
           ? '<span class="badge produce">produces</span>'
           : city.demands.includes(good.id)
             ? '<span class="badge demand">wants</span>'
-            : '';
+            : good.category === 'potion'
+              ? '<span class="badge">potion</span>'
+              : '';
         return `
           <tr>
             <td>${good.name} ${tag}</td>
@@ -53,32 +58,32 @@ export const CityScreen = {
       })
       .join('');
 
-    const availableQuests = getAvailableQuests(state);
+    const availableQuests = getAvailableQuests(state).filter((q) => !q.isFinal);
     const questRows = availableQuests.length
       ? availableQuests
           .map((quest) => {
-            const faction = factions.find((f) => f.id === quest.factionId);
+            const guild = guilds.find((g) => g.id === quest.guildId);
             return `
               <div class="panel" style="padding:10px;">
                 <div class="row spread">
                   <strong>${quest.title}</strong>
-                  <span class="subtle">${faction.name}</span>
+                  <span class="subtle">${guild.name}</span>
                 </div>
                 <p class="subtle">${quest.description}</p>
                 <div class="row spread">
-                  <span class="subtle">Reward: ${quest.rewardGold}g, +${quest.reputationDelta} reputation</span>
+                  <span class="subtle">Reward: ${quest.rewardGold}g, ${quest.rewardXp} xp, +${quest.reputationDelta} reputation</span>
                   <button data-quest="${quest.id}">Undertake</button>
                 </div>
               </div>`;
           })
           .join('')
-      : '<p class="subtle">No contacts have work for you here right now.</p>';
+      : '<p class="subtle">No contacts have work for you here right now. Check the Guild Hall for what\'s next.</p>';
 
     uiRoot.innerHTML = `
       <div class="panel">
         <div class="row spread">
           <h2>${city.name} Market</h2>
-          <span class="subtle">${load}/${vessel.cargoCapacity} cargo &middot; ${state.player.gold}g</span>
+          <span class="subtle">${load}/${capacity} cargo &middot; ${state.player.gold}g</span>
         </div>
         ${this.message ? `<p class="subtle">${this.message}</p>` : ''}
         <table>
@@ -87,7 +92,7 @@ export const CityScreen = {
         </table>
       </div>
       <div class="panel">
-        <h3>Faction Contacts</h3>
+        <h3>Guild Contacts</h3>
         ${questRows}
       </div>
       <div class="row">
@@ -129,7 +134,7 @@ export const CityScreen = {
     const qtyInput = this.uiRoot.querySelector(`#qty-${goodId}`);
     const quantity = Math.max(1, parseInt(qtyInput.value, 10) || 1);
     try {
-      sellGood(state, state.currentCityId, goodId, quantity);
+      sellGood({ market: state.market, player: state.player }, state.currentCityId, goodId, quantity);
       this.message = `Sold ${quantity} ${goodId.replace('_', ' ')}.`;
       saveGame(state);
     } catch (err) {
