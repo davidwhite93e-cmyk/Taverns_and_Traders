@@ -10,5 +10,29 @@
   { "id": "dyed_wool", "name": "Dyed Wool", "category": "crafted", "basePrice": 27, "volatility": 0.3 },
   { "id": "whetstone", "name": "Whetstone", "category": "crafted", "basePrice": 18, "volatility": 0.2 },
   { "id": "amber_resin", "name": "Amber Resin", "category": "luxury", "basePrice": 45, "volatility": 0.4 },
-  { "id": "river_pearls", "name": "River Pearls", "category": "luxury", "basePrice": 60, "volatility": 0.45 }
+  { "id": "river_pearls", "name": "River Pearls", "category": "luxury", "basePrice": 60, "volatility": 0.45 },
+  {
+    "id": "healing_draught",
+    "name": "Healing Draught",
+    "category": "potion",
+    "basePrice": 35,
+    "volatility": 0.1,
+    "effect": { "type": "heal", "magnitude": 32 }
+  },
+  {
+    "id": "vigor_tonic",
+    "name": "Vigor Tonic",
+    "category": "potion",
+    "basePrice": 40,
+    "volatility": 0.1,
+    "effect": { "type": "combat_buff", "attackBonus": 6, "durationRounds": 3 }
+  },
+  {
+    "id": "wayfarers_brew",
+    "name": "Wayfarer's Brew",
+    "category": "potion",
+    "basePrice": 30,
+    "volatility": 0.1,
+    "effect": { "type": "speed_buff", "travelDaysReduction": 1 }
+  }
 ]

@@ -8,7 +8,7 @@
     "description": "A river-mill town of granaries and cooperages, and the traditional starting point for wayfarers new to the roads.",
     "produces": ["grain", "tanned_hide"],
     "demands": ["iron_ore", "salt"],
-    "factionLean": { "concord": 55, "free_caravans": 20 },
+    "guildPresence": { "enforcers": 55, "outlaws": 15, "mercenaries": 20, "arcane_order": 10 },
     "isStartCity": true
   },
   {
@@ -20,7 +20,7 @@
     "description": "A timber and weaving town spread along the eaves of an old forest.",
     "produces": ["dyed_wool", "tanned_hide"],
     "demands": ["iron_ore", "whetstone"],
-    "factionLean": { "concord": 60, "free_caravans": 15 }
+    "guildPresence": { "enforcers": 60, "outlaws": 10, "mercenaries": 20, "arcane_order": 10 }
   },
   {
     "id": "thornwick",
@@ -28,10 +28,10 @@
     "region": "verdant_reach",
     "x": 90,
     "y": 220,
-    "description": "A walled market town that hosts the Concord's regional customs house.",
+    "description": "A walled market town that hosts a regional Enforcer garrison.",
     "produces": ["grain", "malted_barley"],
     "demands": ["copper_ingot", "amber_resin"],
-    "factionLean": { "concord": 75, "free_caravans": 5 }
+    "guildPresence": { "enforcers": 75, "outlaws": 5, "mercenaries": 15, "arcane_order": 5 }
   },
   {
     "id": "greyfield",
@@ -42,7 +42,7 @@
     "description": "Rolling farmland dotted with granaries, quiet but for harvest season.",
     "produces": ["grain", "dyed_wool"],
     "demands": ["salt", "smoked_fish"],
-    "factionLean": { "concord": 50, "free_caravans": 25 }
+    "guildPresence": { "enforcers": 50, "outlaws": 20, "mercenaries": 20, "arcane_order": 10 }
   },
   {
     "id": "duskrun",
@@ -50,10 +50,10 @@
     "region": "ashen_steppe",
     "x": 420,
     "y": 150,
-    "description": "A dust-blown waystation where independent caravan masters trade far from Concord tariff posts.",
+    "description": "A dust-blown waystation where independent traders deal far from any Enforcer garrison.",
     "produces": ["iron_ore", "whetstone"],
     "demands": ["grain", "dyed_wool"],
-    "factionLean": { "concord": 10, "free_caravans": 70 }
+    "guildPresence": { "enforcers": 10, "outlaws": 65, "mercenaries": 20, "arcane_order": 5 }
   },
   {
     "id": "cinderhold",
@@ -61,10 +61,10 @@
     "region": "ashen_steppe",
     "x": 520,
     "y": 100,
-    "description": "A fortified steppe outpost built around a smelting works, favored by the Free Caravans as a supply depot.",
+    "description": "A fortified steppe outpost built around a smelting works, favored by the Outlaws as a supply depot.",
     "produces": ["iron_ore", "copper_ingot"],
     "demands": ["grain", "malted_barley"],
-    "factionLean": { "concord": 5, "free_caravans": 80 }
+    "guildPresence": { "enforcers": 5, "outlaws": 70, "mercenaries": 20, "arcane_order": 5 }
   },
   {
     "id": "redgate",
@@ -75,7 +75,7 @@
     "description": "A canyon-mouth trading post known for its whetstone quarries and its lack of anyone's law.",
     "produces": ["whetstone", "iron_ore"],
     "demands": ["dyed_wool", "amber_resin"],
-    "factionLean": { "concord": 8, "free_caravans": 65 }
+    "guildPresence": { "enforcers": 8, "outlaws": 60, "mercenaries": 25, "arcane_order": 7 }
   },
   {
     "id": "saltmere",
@@ -83,10 +83,10 @@
     "region": "saltmere_coast",
     "x": 150,
     "y": 520,
-    "description": "A bustling harbor city and the largest neutral trade hub on the reach, courted by both factions.",
+    "description": "A bustling harbor city and the largest neutral trade hub on the reach, courted by every guild in the land.",
     "produces": ["salt", "smoked_fish"],
     "demands": ["iron_ore", "copper_ingot"],
-    "factionLean": { "concord": 40, "free_caravans": 40 }
+    "guildPresence": { "enforcers": 30, "outlaws": 20, "mercenaries": 30, "arcane_order": 20 }
   },
   {
     "id": "tidewatch",
@@ -97,7 +97,7 @@
     "description": "A lighthouse town whose pearl divers supply luxury markets up and down the coast.",
     "produces": ["river_pearls", "smoked_fish"],
     "demands": ["grain", "whetstone"],
-    "factionLean": { "concord": 35, "free_caravans": 35 }
+    "guildPresence": { "enforcers": 25, "outlaws": 20, "mercenaries": 25, "arcane_order": 30 }
   },
   {
     "id": "farrows_landing",
@@ -108,7 +108,7 @@
     "description": "A modest fishing port with a growing appetite for inland goods.",
     "produces": ["smoked_fish", "salt"],
     "demands": ["grain", "peat_bricks"],
-    "factionLean": { "concord": 30, "free_caravans": 30 }
+    "guildPresence": { "enforcers": 25, "outlaws": 30, "mercenaries": 25, "arcane_order": 20 }
   },
   {
     "id": "brinewick",
@@ -116,10 +116,10 @@
     "region": "saltmere_coast",
     "x": 340,
     "y": 500,
-    "description": "A salt-pan town where the Concord maintains a customs fleet to police coastal smuggling.",
+    "description": "A salt-pan town where Enforcer customs skiffs try, not always successfully, to police coastal smuggling.",
     "produces": ["salt", "river_pearls"],
     "demands": ["copper_ingot", "malted_barley"],
-    "factionLean": { "concord": 55, "free_caravans": 20 }
+    "guildPresence": { "enforcers": 40, "outlaws": 30, "mercenaries": 20, "arcane_order": 10 }
   },
   {
     "id": "ironspire",
@@ -127,10 +127,10 @@
     "region": "ironspire_highlands",
     "x": 640,
     "y": 260,
-    "description": "A vast terraced mining city built into the flank of the Ironspire massif, seat of Concord industry.",
+    "description": "A vast terraced mining city built into the flank of the Ironspire massif, seat of Enforcer industry.",
     "produces": ["iron_ore", "copper_ingot"],
     "demands": ["grain", "smoked_fish"],
-    "factionLean": { "concord": 70, "free_caravans": 15 }
+    "guildPresence": { "enforcers": 65, "outlaws": 15, "mercenaries": 15, "arcane_order": 5 }
   },
   {
     "id": "copperfall",
@@ -141,7 +141,7 @@
     "description": "A smelting town beneath a waterfall of the same name, known for its fine ingot work.",
     "produces": ["copper_ingot", "whetstone"],
     "demands": ["grain", "dyed_wool"],
-    "factionLean": { "concord": 65, "free_caravans": 20 }
+    "guildPresence": { "enforcers": 60, "outlaws": 20, "mercenaries": 15, "arcane_order": 5 }
   },
   {
     "id": "hollowpeak",
@@ -149,10 +149,10 @@
     "region": "ironspire_highlands",
     "x": 610,
     "y": 400,
-    "description": "A high mountain pass town, the last reliable stop before the eastern trade routes.",
+    "description": "A high mountain pass town, the last reliable stop before the eastern trade routes, and near enough to old ruins to draw the Order's attention.",
     "produces": ["whetstone", "iron_ore"],
     "demands": ["salt", "amber_resin"],
-    "factionLean": { "concord": 60, "free_caravans": 25 }
+    "guildPresence": { "enforcers": 55, "outlaws": 20, "mercenaries": 15, "arcane_order": 10 }
   },
   {
     "id": "mossport",
@@ -160,10 +160,10 @@
     "region": "fenlands",
     "x": 380,
     "y": 470,
-    "description": "A stilt-built fen town where peat cutters and resin gatherers ship their goods downriver.",
+    "description": "A stilt-built fen town where peat cutters and resin gatherers ship their goods downriver, mostly out of anyone's sight.",
     "produces": ["peat_bricks", "amber_resin"],
     "demands": ["copper_ingot", "whetstone"],
-    "factionLean": { "concord": 15, "free_caravans": 60 }
+    "guildPresence": { "enforcers": 15, "outlaws": 55, "mercenaries": 15, "arcane_order": 15 }
   },
   {
     "id": "reedwick",
@@ -174,7 +174,7 @@
     "description": "A brewing town famous for its malted barley, hidden deep in the reed channels.",
     "produces": ["malted_barley", "peat_bricks"],
     "demands": ["iron_ore", "salt"],
-    "factionLean": { "concord": 20, "free_caravans": 55 }
+    "guildPresence": { "enforcers": 20, "outlaws": 50, "mercenaries": 15, "arcane_order": 15 }
   },
   {
     "id": "blackfen",
@@ -182,9 +182,9 @@
     "region": "fenlands",
     "x": 400,
     "y": 380,
-    "description": "A remote fen outpost that answers to whichever caravan master last paid for its loyalty.",
+    "description": "A remote fen outpost near ruins old enough that the Order keeps a standing watch on them, when it can afford to.",
     "produces": ["amber_resin", "peat_bricks"],
     "demands": ["copper_ingot", "dyed_wool"],
-    "factionLean": { "concord": 10, "free_caravans": 75 }
+    "guildPresence": { "enforcers": 10, "outlaws": 55, "mercenaries": 15, "arcane_order": 20 }
   }
 ]

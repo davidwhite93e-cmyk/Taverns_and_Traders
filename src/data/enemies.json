@@ -1,0 +1,98 @@
+[
+  {
+    "id": "steppe_bandits",
+    "name": "Steppe Bandits",
+    "tier": "common",
+    "attack": 8,
+    "defense": 4,
+    "hp": 30,
+    "loot": 40,
+    "xpReward": 12,
+    "composition": "A ragged band of three or four riders, more interested in your cargo than a fair fight."
+  },
+  {
+    "id": "fen_raiders",
+    "name": "Fen Raiders",
+    "tier": "common",
+    "attack": 10,
+    "defense": 3,
+    "hp": 26,
+    "loot": 35,
+    "xpReward": 11,
+    "composition": "Raiders who know the reed channels better than you do, striking fast and low."
+  },
+  {
+    "id": "rival_caravan",
+    "name": "Rival Caravan Guard",
+    "tier": "common",
+    "attack": 12,
+    "defense": 8,
+    "hp": 45,
+    "loot": 70,
+    "xpReward": 16,
+    "composition": "A hired sword protecting a competitor's wagon, none too pleased to see you on the same road."
+  },
+  {
+    "id": "orc_raiders",
+    "name": "Orc Raiders",
+    "tier": "common",
+    "attack": 15,
+    "defense": 9,
+    "hp": 55,
+    "loot": 65,
+    "xpReward": 22,
+    "composition": "A war-band out from the wildlands, testing the roads ahead of something larger."
+  },
+  {
+    "id": "vrakthar_the_unbound",
+    "name": "Vrakthar the Unbound",
+    "tier": "boss",
+    "guildId": "enforcers",
+    "attack": 30,
+    "defense": 18,
+    "hp": 220,
+    "loot": 1200,
+    "xpReward": 220,
+    "composition": "The warlord who united the wildland tribes stands at the gate of his stronghold, his war-band arrayed behind him.",
+    "telegraph": "Word reaches the Enforcers: Vrakthar's horde is marching on the trade roads. This is the fight the whole campaign has been building toward."
+  },
+  {
+    "id": "brazen_warden",
+    "name": "The Brazen Warden",
+    "tier": "boss",
+    "guildId": "outlaws",
+    "attack": 26,
+    "defense": 24,
+    "hp": 190,
+    "loot": 1200,
+    "xpReward": 220,
+    "composition": "A magically-animated construct of bronze and warded iron, still trailing scaffolding from its unfinished forging.",
+    "telegraph": "The Order of the Arcane's construct isn't finished being empowered yet — this is the only window to stop it before it is."
+  },
+  {
+    "id": "kestra_vane",
+    "name": "Kestra Vane, the Unbeaten",
+    "tier": "boss",
+    "guildId": "mercenaries",
+    "attack": 32,
+    "defense": 16,
+    "hp": 200,
+    "loot": 1200,
+    "xpReward": 220,
+    "composition": "The champion of a rival company, here to settle who really runs the contract board — no politics, just a duel.",
+    "telegraph": "Kestra Vane has called you out by name. No escorts, no tricks — the guild's dominance rides on this alone."
+  },
+  {
+    "id": "threnval_the_ashwyrm",
+    "name": "Threnval, the Ashen Wyrm",
+    "tier": "boss",
+    "guildId": "arcane_order",
+    "attack": 34,
+    "defense": 20,
+    "hp": 260,
+    "loot": 1200,
+    "xpReward": 220,
+    "composition": "An ancient dragon, roused from a centuries-long sleep by treasure hunters who didn't heed the old warnings.",
+    "telegraph": "The Order has tracked Threnval to its lair. Whatever happens next, the world changes after this."
+  }
+]

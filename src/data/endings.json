@@ -1,26 +1,32 @@
 [
   {
-    "id": "concord_magnate",
-    "title": "The Chartered Magnate",
-    "summary": "You rose through the Ledgerbound Concord to become a chartered magnate, your seal now stamped on manifests from Millhaven to Ironspire. The roads you once walked on foot are patrolled by wagons that answer to you, and the tariff you once paid, you now collect.",
-    "condition": "High wealth and strong standing with the Concord."
+    "id": "enforcers",
+    "title": "The Roads Held",
+    "summary": "Vrakthar's horde broke against the trade roads and scattered back into the wildlands. Order wins the day, and with it, the Enforcers' grip on every chartered road in the reach tightens. It isn't the freest ending, but the roads are safe, and that was always the point.",
+    "condition": "Complete the Enforcers' final commission: defeat Vrakthar the Unbound."
   },
   {
-    "id": "free_caravan_legend",
-    "title": "The Unbroken Wheel",
-    "summary": "Your name is toasted in every waystation the Free Caravans hold, from Duskrun's dust to Blackfen's mire. You built your fortune outrunning tariffs and trusting your own ledger, and the frontier remembers who never bent the knee to a customs house.",
-    "condition": "High wealth and strong standing with the Free Caravans."
+    "id": "outlaws",
+    "title": "Before It Woke",
+    "summary": "The Brazen Warden falls before its warding is complete, a heap of cooling bronze and broken sigils. Freedom wins, but the roads stay exactly as dangerous and lawless as they always were — which, to the Outlaws, was never really the problem.",
+    "condition": "Complete the Outlaws' final commission: destroy the Brazen Warden."
   },
   {
-    "id": "independent_wayfarer",
+    "id": "mercenaries",
+    "title": "The Unbeaten, Beaten",
+    "summary": "Kestra Vane goes down in a straight fight, no tricks and no politics, and the contract board has a new name at the top of it: yours. The undisputed strongest blade-for-hire in the land, for whatever that title is worth to the next challenger who comes looking.",
+    "condition": "Complete the Mercenaries' final commission: defeat Kestra Vane."
+  },
+  {
+    "id": "arcane_order",
+    "title": "What Stays Asleep",
+    "summary": "Threnval the Ashen Wyrm is driven back into a deep and, this time, better-warded sleep. The Order's archives grow by one very careful, very redacted volume, and the world keeps turning without ever knowing how close it came.",
+    "condition": "Complete the Order of the Arcane's final commission: contain Threnval, the Ashen Wyrm."
+  },
+  {
+    "id": "wealth",
     "title": "The Ledger of No House",
-    "summary": "You courted neither the Concord nor the Free Caravans, and built your wealth on routes and reputations of your own making. No banner flies over your caravan, and none is needed; the coin in your strongbox answers to nobody but you.",
-    "condition": "High wealth without strong allegiance to either faction."
-  },
-  {
-    "id": "ruined_wanderer",
-    "title": "The Long Road Back",
-    "summary": "Bad trades, worse luck, or a road you should never have taken left your strongbox empty and your cargo gone. You still walk the reach, but as a wayfarer with nothing left to sell but the story of how you lost it all.",
-    "condition": "Low wealth at journey's end, regardless of reputation."
+    "summary": "No guild banner ever flew over your caravan, and none was needed. One hundred thousand gold pieces, earned wagon-load by wagon-load on nothing but the strength of a good eye for a fair price. The coin in your strongbox answers to nobody but you.",
+    "condition": "Reach 100,000 gold through trade alone — no guild commission required."
   }
 ]

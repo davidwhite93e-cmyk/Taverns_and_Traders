@@ -1,0 +1,70 @@
+[
+  {
+    "id": "merchant",
+    "name": "Merchant",
+    "description": "Trained in the ledger, not the sword. Starts with more coin and a sharper eye for a fair price.",
+    "startingGold": 150,
+    "startingKit": {
+      "attackBonus": 0,
+      "defenseBonus": 0,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 5,
+      "tradeDiscount": 0.1,
+      "escortEffectiveness": 1,
+      "maxMana": 0,
+      "startingSpells": []
+    }
+  },
+  {
+    "id": "scout",
+    "name": "Scout",
+    "description": "Lives on the road more than in any city. Fast, hard to ambush, and travels light.",
+    "startingGold": 60,
+    "startingKit": {
+      "attackBonus": 2,
+      "defenseBonus": 1,
+      "speedMultiplier": 1.1,
+      "ambushAvoidance": 0.2,
+      "cargoBonus": 0,
+      "tradeDiscount": 0,
+      "escortEffectiveness": 1,
+      "maxMana": 0,
+      "startingSpells": []
+    }
+  },
+  {
+    "id": "warrior",
+    "name": "Warrior",
+    "description": "Blade-first. Strong in a straight fight and gets the most out of every hired escort.",
+    "startingGold": 60,
+    "startingKit": {
+      "attackBonus": 6,
+      "defenseBonus": 4,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 0,
+      "tradeDiscount": 0,
+      "escortEffectiveness": 1.5,
+      "maxMana": 0,
+      "startingSpells": []
+    }
+  },
+  {
+    "id": "mage",
+    "name": "Mage",
+    "description": "Weak in a straight fight, but carries real magic to make up for it — at the cost of a mana pool to manage.",
+    "startingGold": 60,
+    "startingKit": {
+      "attackBonus": -2,
+      "defenseBonus": 0,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 0,
+      "tradeDiscount": 0,
+      "escortEffectiveness": 1,
+      "maxMana": 30,
+      "startingSpells": ["arcane_bolt", "warding_aegis", "hastened_retreat"]
+    }
+  }
+]
