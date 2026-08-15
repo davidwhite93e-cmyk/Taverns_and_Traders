@@ -10,7 +10,7 @@ const context = { canvas, state: null };
 const screenManager = new ScreenManager({ canvas, uiRoot, context });
 
 const loop = new GameLoop({
-  update: () => {},
+  update: (dt) => screenManager.update(dt),
   render: () => screenManager.draw(ctx, canvas),
 });
 

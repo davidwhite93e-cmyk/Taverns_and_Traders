@@ -1,10 +1,12 @@
 import { loadCities, loadRoutes, getCity, findPath, travelTimeDays } from '../world/world.js';
-import { drawWorldMap, hitTestCity } from '../world/map.js';
+import { drawWorldMap, hitTestCity, pathSegments, pointAlongPath } from '../world/map.js';
+import { drawVessel } from '../world/vesselSprites.js';
 import { getVessel } from '../world/vessels.js';
 import { driftMarket } from '../economy/market.js';
 import { loadGoods } from '../economy/goods.js';
 import { saveGame } from '../state/GameState.js';
 import { createEncounter, rollAmbush } from '../combat/combat.js';
+import { formatCoin } from './format.js';
 import { CityScreen } from './CityScreen.js';
 import { InventoryScreen } from './InventoryScreen.js';
 import { GuildScreen } from './GuildScreen.js';
@@ -12,6 +14,9 @@ import { EndingScreen } from './EndingScreen.js';
 import { CombatScreen } from './CombatScreen.js';
 
 const ENCOUNTER_CHANCE_PER_DAY = 0.12;
+const TRAVEL_ANIM_BASE_MS = 900;
+const TRAVEL_ANIM_PER_HOP_MS = 400;
+const TRAVEL_ANIM_MAX_MS = 2600;
 
 const cities = loadCities();
 const routes = loadRoutes();
@@ -31,6 +36,7 @@ export const MapScreen = {
     this.screenManager = screenManager;
     this.context = context;
     this.uiRoot = uiRoot;
+    this.travel = null;
     this.renderPanel();
   },
 
@@ -54,14 +60,14 @@ export const MapScreen = {
       <div class="panel">
         <div class="row spread">
           <h2>${city.name}</h2>
-          <span class="subtle">Lv.${state.player.level} ${state.player.name} &middot; Day ${state.daysElapsed} &middot; ${state.player.gold}g &middot; ${vessel.name}</span>
+          <span class="subtle">Lv.${state.player.level} ${state.player.name} &middot; Day ${state.daysElapsed} &middot; ${formatCoin(state.player.gold)} &middot; ${vessel.name}</span>
         </div>
         <p>${city.description}</p>
         <div class="row">
-          <button id="enter-city-btn">Trade Here</button>
+          <button id="enter-city-btn">Enter the Market</button>
           <button id="guild-btn">Guild Hall</button>
-          <button id="inventory-btn">Inventory &amp; Vessel</button>
-          <button id="retire-btn">Retire &amp; Settle Accounts</button>
+          <button id="inventory-btn">Cargo &amp; Caravan</button>
+          <button id="retire-btn">Retire &amp; Settle the Ledger</button>
         </div>
       </div>
       <div class="panel">
@@ -88,12 +94,55 @@ export const MapScreen = {
   },
 
   travelTo(destCityId) {
+    if (this.travel) return; // already on the road
     const state = this.context.state;
     const vessel = getVessel(state.player.vesselId);
     const path = findPath(state.currentCityId, destCityId, vessel.allowedRouteTypes);
     if (!path) return;
 
-    const days = travelTimeDays(path.distance, vessel.speed);
+    const waypoints = path.path.map((id) => getCity(id));
+    const { segmentLengths, total } = pathSegments(waypoints);
+    const durationMs = Math.min(
+      TRAVEL_ANIM_MAX_MS,
+      TRAVEL_ANIM_BASE_MS + (waypoints.length - 1) * TRAVEL_ANIM_PER_HOP_MS
+    );
+
+    this.travel = {
+      destCityId,
+      path,
+      vessel,
+      waypoints,
+      segmentLengths,
+      total,
+      elapsedMs: 0,
+      durationMs,
+    };
+    this.renderTravelingPanel(destCityId);
+  },
+
+  renderTravelingPanel(destCityId) {
+    const dest = getCity(destCityId);
+    this.uiRoot.innerHTML = `
+      <div class="panel">
+        <h2>On the Road</h2>
+        <p class="subtle">Traveling to ${dest.name}...</p>
+      </div>
+    `;
+  },
+
+  update(dt) {
+    if (!this.travel) return;
+    this.travel.elapsedMs += dt * 1000;
+    if (this.travel.elapsedMs >= this.travel.durationMs) {
+      const { path, destCityId, vessel } = this.travel;
+      this.travel = null;
+      this.finishTravel(path, destCityId, vessel);
+    }
+  },
+
+  finishTravel(path, destCityId) {
+    const state = this.context.state;
+    const days = travelTimeDays(path.distance, getVessel(state.player.vesselId).speed);
     for (let i = 0; i < days; i++) {
       driftMarket(state.market, cities, goods);
     }
@@ -126,11 +175,30 @@ export const MapScreen = {
       cities,
       routes,
       currentCityId: state.currentCityId,
-      reachableCityIds: reachableCityIds(state),
+      reachableCityIds: this.travel ? [] : reachableCityIds(state),
     });
+
+    if (this.travel) {
+      const t = this.travel.elapsedMs / this.travel.durationMs;
+      const point = pointAlongPath(this.travel.waypoints, this.travel.segmentLengths, this.travel.total, t);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(point.x, point.y - 10, 20, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(168, 121, 31, 0.25)';
+      ctx.fill();
+      ctx.restore();
+
+      drawVessel(ctx, this.travel.vessel.id, point.x, point.y, {
+        animTimeSec: this.travel.elapsedMs / 1000,
+        facingLeft: point.facingLeft,
+        scale: 1.1,
+      });
+    }
   },
 
   onCanvasClick(x, y) {
+    if (this.travel) return;
     const state = this.context?.state;
     if (!state) return;
     const city = hitTestCity(cities, x, y);

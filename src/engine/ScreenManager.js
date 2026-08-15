@@ -25,6 +25,13 @@ export class ScreenManager {
     }
   }
 
+  // Per-frame time-advance hook (animation state, not DOM/canvas writes).
+  update(dt) {
+    if (this.current && typeof this.current.update === 'function') {
+      this.current.update(dt);
+    }
+  }
+
   // Per-frame canvas hook, deliberately NOT named `render` — screens each have
   // their own DOM-rebuild method (by convention, `renderPanel`), and naming
   // this the same as that would make every such method fire ~60x/second.
