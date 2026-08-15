@@ -23,10 +23,12 @@ worked in order:
    end to end.**
 3. **Polish pass** — medieval tone/naming pass, felt combat (damage
    numbers, hit sounds, pacing), sprite art and animation (caravan travel
-   motion, NPC walk cycles, combat sprite states). **In progress.** Started
-   with the tone/naming pass and the animation/sprite groundwork (see
-   Visual style guide below); felt-combat feedback, background NPC loops,
-   and ambient audio have not been started yet.
+   motion, NPC walk cycles, combat sprite states). **In progress.** Landed
+   so far: the tone/naming pass, animation/sprite groundwork (see Visual
+   style guide below), and combat hit feedback — damage numbers, screen
+   shake, synthesized sound, punchier log lines, and per-exchange pacing
+   (see Combat hit feedback below). Not started yet: background NPC loops,
+   on-screen combat sprites (idle/attack/hit/defeat), and ambient audio.
 4. **Android shipping** — Capacitor wrap, touch/mobile hardening, IAP,
    signing, Play Console listing. **Not started.** Gated behind Part 3.
 
@@ -57,13 +59,15 @@ started; no Capacitor wrapping, native builds, or IAP work exists yet.
 | Animation system (AnimatedSprite) | Implemented |
 | Procedural vessel sprites | Implemented (geometric, all 7 vessel tiers, rotating wheels/leg cycle) |
 | Caravan travel animation on the map | Implemented |
-| Combat hit feedback (damage numbers, shake, sound, punchy log lines) | Not started |
+| Combat hit feedback (damage numbers, shake, sound, punchy log lines) | Implemented (see Combat hit feedback below) |
 | Background NPC loops in cities | Not started |
 | Combat sprite states (idle/attack/hit/defeat) for enemies/bosses | Not started — combat is still text/log driven, no on-screen combatant sprites yet |
 | Day/night or weather tint on the map | Not started |
 | Rotating one-line flavor text per city visit | Not started |
-| Ambient audio | Not started |
+| Ambient audio (background music/tavern noise) | Not started — combat now has synthesized sound effects, but there's no ambient loop |
 | Escort names/portraits, wounding/loss | Not started |
+| Formation element ("who do you protect first") | Not started (brief marks this an optional stretch goal) |
+| Siege-style/varied encounter framing beyond ambush vs. open | Not started — only ambush-or-not is modeled today |
 | Android/Capacitor build | Not started (Part 4) |
 | Guild-reputation trade perks (toll discounts, black-market prices, etc.) | **Documented, not mechanically implemented.** Reputation currently gates quest access only; the flavor perks each guild's design describes (safer routes, black-market pricing, better escorts/spells) are not yet wired into the economy or combat systems. Flagged here rather than silently skipped. |
 
@@ -232,6 +236,56 @@ both attack and defense, scaled by the class's `escortEffectiveness`
 (Warriors get the most out of them). Common encounters
 (`tier: "common"` in `enemies.json`) are bandits, fen raiders, rival
 caravan guards, and orc raiders, rolled with a per-travel-day chance.
+
+Every damage roll (`rollDamage` in `combat.js`) has a 15% chance to crit for
+1.6x damage — this exists specifically so the hit-feedback system below has
+something to escalate for ("hits vs. crits" per the brief), not as a deep
+combat-balance feature.
+
+## Combat hit feedback
+
+Per the brief's "make combat feel alive" objective — damage numbers, screen
+shake, distinct sounds, and punchier log lines, all built without any
+external asset (no image sprites for numbers, no fetched audio files):
+
+- **Structured log entries.** Each combat action (`combat.js`) pushes a log
+  entry shaped `{ actor, type, amount, isCrit, text, playerHpAfter,
+  enemyHpAfter }` instead of a bare string. `type` is one of `attack` /
+  `spell` / `shield` / `heal` / `buff` / `flee` / `flee-fail` / `ambush`.
+  The HP-after snapshots let the UI animate through multi-entry actions
+  (e.g. "you hit, they hit back") one step at a time instead of jumping
+  straight to the final HP.
+- **Punchier text.** `text` is picked from small template pools per
+  situation (`PLAYER_HIT_LINES`, `PLAYER_CRIT_LINES`, `ENEMY_HIT_LINES`,
+  `ENEMY_CRIT_LINES` in `combat.js`) — "Your blade finds an opening for 12
+  damage!" rather than "Player dealt 12 damage." The text-variety random
+  pick is intentionally a separate, unseeded `Math.random()` call from the
+  damage-math `rng` parameter, so damage numbers stay fully testable/
+  deterministic while flavor text still varies.
+- **Sequenced replay (`CombatScreen.runAction`).** A button click runs the
+  actual combat-log-producing function synchronously (so game state is
+  never in an inconsistent state), then replays whichever log entries it
+  just produced one at a time with a ~500ms gap between them
+  (`replayEntries`) — this is the "don't resolve a whole fight in one
+  instant tick" pacing note from the brief, applied at the level of a
+  single exchange rather than a full multi-round fight. Action buttons are
+  disabled for the duration so a fast double-click can't desync the
+  replay from the actual session state.
+- **Per-entry feedback (`applyEntryFeedback`).** For each replayed entry:
+  the relevant HP bar's width is updated (CSS `transition: width` glides
+  it rather than snapping), a floating `+N`/`-N` "damage number" is
+  spawned over the right side's HP box and fades out over ~0.9s
+  (`.dmg-number` in `style.css`, gold and larger on a crit), the combat
+  panel plays a brief shake (`panel-shake` / stronger `panel-shake-strong`
+  on a crit, plus a brief gold flash overlay on a crit), and a matching
+  synthesized sound plays.
+- **Synthesized SFX (`src/combat/sfx.js`).** No audio files — each sound
+  (`hit`, `crit`, `heal`, `buff`, `fleeSuccess`, `fleeFail`, `ambush`,
+  `victory`, `defeat`) is a couple of short Web Audio oscillator tones with
+  a quick decay envelope. Wrapped defensively (try/catch, checks for
+  `AudioContext` support) so a browser/environment that blocks or lacks
+  Web Audio just plays silently rather than breaking combat. There's no
+  mute toggle yet — a reasonable follow-up, not done here.
 
 ## Endings
 

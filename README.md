@@ -36,7 +36,7 @@ npm run lint      # lint the codebase (ESLint)
 - Vanilla JavaScript (ES modules), no framework
 - HTML5 Canvas for the world map
 - [Vite](https://vitejs.dev/) for dev server and bundling
-- [Vitest](https://vitest.dev/) for unit tests (53 tests across economy,
+- [Vitest](https://vitest.dev/) for unit tests (56 tests across economy,
   combat, guilds/endings, character/leveling, and vessel progression)
 - Game data (cities, goods, guilds, races, classes, spells, vessels,
   quests, enemies, endings) is plain JSON in `src/data/`, kept separate
@@ -60,11 +60,13 @@ status):
 1. **Repo setup** — done
 2. **Core game design** — the sandbox loop described above — **done,
    playable end to end**
-3. **Polish pass** — medieval tone/naming pass and animation/sprite
-   groundwork are **in progress** (parchment UI, "crowns"/"renown"/
-   "standing" copy pass, procedural vessel sprites, an animated caravan
-   that travels the map in real time); felt-combat feedback, background
-   NPC loops, and ambient audio are **not started**
+3. **Polish pass** — **in progress**: medieval tone/naming pass (parchment
+   UI, "crowns"/"renown"/"standing" copy), animation/sprite groundwork
+   (procedural vessel sprites, an animated caravan that travels the map in
+   real time), and combat hit feedback (damage numbers, screen shake,
+   synthesized hit/crit/heal/flee sounds, punchier log lines) are all
+   landed; background NPC loops, on-screen combat sprites, and ambient
+   audio are **not started**
 4. **Android shipping** — Capacitor wrap, IAP, Play Store listing — **not
    started**
 
