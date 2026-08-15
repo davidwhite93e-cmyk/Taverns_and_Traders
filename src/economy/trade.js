@@ -7,14 +7,18 @@ export function cargoTotal(cargo) {
   return Object.values(cargo).reduce((sum, qty) => sum + qty, 0);
 }
 
+export function effectiveCargoCapacity(vessel, player) {
+  return vessel.cargoCapacity + (player.cargoBonus || 0);
+}
+
 export function buyGood({ market, player, vessel }, cityId, goodId, quantity) {
   if (!Number.isInteger(quantity) || quantity <= 0) {
     throw new Error('Quantity must be a positive integer');
   }
   const price = getPrice(market, cityId, goodId);
-  const cost = roundPrice(price * quantity);
+  const cost = roundPrice(price * quantity * (1 - (player.tradeDiscount || 0)));
   const projectedLoad = cargoTotal(player.cargo) + quantity;
-  if (projectedLoad > vessel.cargoCapacity) {
+  if (projectedLoad > effectiveCargoCapacity(vessel, player)) {
     throw new Error('Not enough cargo space');
   }
   if (player.gold < cost) {
@@ -37,7 +41,7 @@ export function sellGood({ market, player }, cityId, goodId, quantity) {
     throw new Error('Not enough goods in cargo to sell');
   }
   const price = getPrice(market, cityId, goodId);
-  const revenue = roundPrice(price * quantity);
+  const revenue = roundPrice(price * quantity * (1 + (player.tradeDiscount || 0)));
 
   player.gold = roundPrice(player.gold + revenue);
   const remaining = owned - quantity;

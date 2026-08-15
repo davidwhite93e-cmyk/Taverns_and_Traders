@@ -1,71 +1,193 @@
-const ENCOUNTER_TYPES = [
-  { id: 'steppe_bandits', name: 'Steppe Bandits', attack: 8, defense: 4, hp: 30, loot: 40 },
-  { id: 'fen_raiders', name: 'Fen Raiders', attack: 10, defense: 3, hp: 26, loot: 35 },
-  { id: 'rival_caravan', name: 'Rival Caravan Guard', attack: 12, defense: 8, hp: 45, loot: 70 },
-];
+import enemiesData from '../data/enemies.json';
+import { getVessel } from '../world/vessels.js';
+import { addXp } from '../character/level.js';
 
-const MAX_ROUNDS = 50;
 const DAMAGE_VARIANCE = 4;
-const FLEE_CHANCE = 0.5;
+const BASE_AMBUSH_CHANCE = 0.4;
 const DEFEAT_GOLD_PENALTY = 0.2;
 
-export function createEncounter(rng = Math.random) {
-  const template = ENCOUNTER_TYPES[Math.floor(rng() * ENCOUNTER_TYPES.length)];
+export function loadEnemies() {
+  return enemiesData;
+}
+
+function cloneEncounter(template) {
   return { ...template, currentHp: template.hp };
 }
 
+export function createEncounter(rng = Math.random) {
+  const common = enemiesData.filter((e) => e.tier === 'common');
+  const template = common[Math.floor(rng() * common.length)];
+  return cloneEncounter(template);
+}
+
+export function createBossEncounter(bossId) {
+  const template = enemiesData.find((e) => e.id === bossId && e.tier === 'boss');
+  if (!template) throw new Error(`Unknown boss: ${bossId}`);
+  return cloneEncounter(template);
+}
+
 export function playerCombatStats(state) {
+  const vessel = getVessel(state.player.vesselId);
   const { combat } = state.player;
+  const escortPower = combat.escorts * combat.escortEffectiveness;
   return {
-    attack: combat.baseAttack + combat.escorts * 3,
-    defense: combat.baseDefense + combat.escorts * 1,
+    attack: combat.baseAttack + escortPower * 3,
+    defense: combat.baseDefense + escortPower + vessel.defenseRating,
     hp: combat.hp,
     maxHp: combat.maxHp,
   };
+}
+
+export function rollAmbush(ambushAvoidance, rng = Math.random) {
+  const chance = Math.max(0, BASE_AMBUSH_CHANCE * (1 - ambushAvoidance));
+  return rng() < chance;
+}
+
+export function createCombatSession(state, enemy) {
+  const base = playerCombatStats(state);
+  return {
+    enemy,
+    playerHp: base.hp,
+    playerMaxHp: base.maxHp,
+    baseAttack: base.attack,
+    baseDefense: base.defense,
+    enemyHp: enemy.currentHp,
+    round: 0,
+    log: [],
+    shieldRoundsRemaining: 0,
+    shieldBonus: 0,
+    attackBuffRoundsRemaining: 0,
+    attackBuffBonus: 0,
+    guaranteedFlee: false,
+    ended: false,
+    outcome: null,
+  };
+}
+
+function currentPlayerAttack(session) {
+  return session.baseAttack + (session.attackBuffRoundsRemaining > 0 ? session.attackBuffBonus : 0);
+}
+
+function currentPlayerDefense(session) {
+  return session.baseDefense + (session.shieldRoundsRemaining > 0 ? session.shieldBonus : 0);
 }
 
 function rollDamage(attack, defense, rng) {
   return Math.max(1, Math.round(attack - defense * 0.5 + (rng() - 0.5) * DAMAGE_VARIANCE));
 }
 
-/** Simple auto-resolve turn-based combat: player and enemy trade blows until one reaches 0 HP. */
-export function resolveCombat(player, enemy, rng = Math.random) {
-  let playerHp = player.hp;
-  let enemyHp = enemy.hp;
-  const log = [];
-  let round = 0;
+function tickBuffs(session) {
+  if (session.shieldRoundsRemaining > 0) session.shieldRoundsRemaining -= 1;
+  if (session.attackBuffRoundsRemaining > 0) session.attackBuffRoundsRemaining -= 1;
+}
 
-  while (playerHp > 0 && enemyHp > 0 && round < MAX_ROUNDS) {
-    round += 1;
-
-    const playerDamage = rollDamage(player.attack, enemy.defense, rng);
-    enemyHp = Math.max(0, enemyHp - playerDamage);
-    log.push({ round, actor: 'player', damage: playerDamage, enemyHp, playerHp });
-    if (enemyHp <= 0) break;
-
-    const enemyDamage = rollDamage(enemy.attack, player.defense, rng);
-    playerHp = Math.max(0, playerHp - enemyDamage);
-    log.push({ round, actor: 'enemy', damage: enemyDamage, enemyHp, playerHp });
+function enemyRetaliate(session, rng) {
+  const damage = rollDamage(session.enemy.attack, currentPlayerDefense(session), rng);
+  session.playerHp = Math.max(0, session.playerHp - damage);
+  session.log.push({ actor: 'enemy', text: `${session.enemy.name} hits you for ${damage} damage.` });
+  if (session.playerHp <= 0) {
+    session.ended = true;
+    session.outcome = 'defeat';
   }
-
-  return {
-    outcome: playerHp <= 0 ? 'defeat' : 'victory',
-    rounds: round,
-    log,
-    playerHpRemaining: playerHp,
-    enemyHpRemaining: enemyHp,
-  };
 }
 
-export function attemptFlee(rng = Math.random) {
-  return rng() < FLEE_CHANCE;
+/** The enemy strikes first, before the player gets a turn. Vessel defense blunts the blow. */
+export function applyAmbushStrike(session, rng = Math.random) {
+  const damage = rollDamage(session.enemy.attack, currentPlayerDefense(session), rng);
+  session.playerHp = Math.max(0, session.playerHp - damage);
+  session.log.push({
+    actor: 'enemy',
+    text: `Ambushed! ${session.enemy.name} strikes first for ${damage} damage.`,
+  });
+  if (session.playerHp <= 0) {
+    session.ended = true;
+    session.outcome = 'defeat';
+  }
+  return session;
 }
 
-export function applyCombatOutcome(state, encounter, result) {
-  state.player.combat.hp = Math.max(1, result.playerHpRemaining || 1);
-  if (result.outcome === 'victory') {
-    state.player.gold += encounter.loot;
+export function playerAttack(session, rng = Math.random) {
+  if (session.ended) return session;
+  session.round += 1;
+  const damage = rollDamage(currentPlayerAttack(session), session.enemy.defense, rng);
+  session.enemyHp = Math.max(0, session.enemyHp - damage);
+  session.log.push({ actor: 'player', text: `You strike for ${damage} damage.` });
+  if (session.enemyHp <= 0) {
+    session.ended = true;
+    session.outcome = 'victory';
+    return session;
+  }
+  enemyRetaliate(session, rng);
+  tickBuffs(session);
+  return session;
+}
+
+export function castSpell(session, spell, rng = Math.random) {
+  if (session.ended) return session;
+  if (spell.type === 'damage') {
+    session.round += 1;
+    const damage = rollDamage(currentPlayerAttack(session) + spell.effect.bonusDamage, session.enemy.defense, rng);
+    session.enemyHp = Math.max(0, session.enemyHp - damage);
+    session.log.push({ actor: 'player', text: `You cast ${spell.name}, dealing ${damage} damage.` });
+    if (session.enemyHp <= 0) {
+      session.ended = true;
+      session.outcome = 'victory';
+      return session;
+    }
+    enemyRetaliate(session, rng);
+    tickBuffs(session);
+  } else if (spell.type === 'shield') {
+    session.round += 1;
+    session.shieldRoundsRemaining = spell.effect.durationRounds;
+    session.shieldBonus = spell.effect.defenseBonus;
+    session.log.push({ actor: 'player', text: `You raise ${spell.name}, bracing for the next blows.` });
+    enemyRetaliate(session, rng);
+    tickBuffs(session);
+  } else if (spell.type === 'utility') {
+    session.guaranteedFlee = true;
+    session.log.push({ actor: 'player', text: `${spell.name} hums around you — your next retreat is certain.` });
+  }
+  return session;
+}
+
+export function usePotionEffect(session, effect, rng = Math.random) {
+  if (session.ended) return session;
+  if (effect.type === 'heal') {
+    session.playerHp = Math.min(session.playerMaxHp, session.playerHp + effect.magnitude);
+    session.log.push({ actor: 'player', text: `You drink a healing draught, recovering ${effect.magnitude} HP.` });
+  } else if (effect.type === 'combat_buff') {
+    session.attackBuffRoundsRemaining = effect.durationRounds;
+    session.attackBuffBonus = effect.attackBonus;
+    session.log.push({ actor: 'player', text: 'You down a vigor tonic, feeling the strength surge.' });
+  }
+  session.round += 1;
+  enemyRetaliate(session, rng);
+  tickBuffs(session);
+  return session;
+}
+
+export function attemptFlee(session, rng = Math.random) {
+  if (session.ended) return session;
+  const success = session.guaranteedFlee || rng() < 0.5;
+  session.guaranteedFlee = false;
+  if (success) {
+    session.ended = true;
+    session.outcome = 'fled';
+    session.log.push({ actor: 'player', text: 'You break off and flee down the road.' });
   } else {
+    session.log.push({ actor: 'player', text: 'You fail to break away!' });
+    enemyRetaliate(session, rng);
+    tickBuffs(session);
+  }
+  return session;
+}
+
+export function applyCombatOutcome(state, session) {
+  state.player.combat.hp = Math.max(1, session.playerHp || 1);
+  if (session.outcome === 'victory') {
+    state.player.gold += session.enemy.loot;
+    addXp(state, session.enemy.xpReward);
+  } else if (session.outcome === 'defeat') {
     const penalty = Math.round(state.player.gold * DEFEAT_GOLD_PENALTY);
     state.player.gold = Math.max(0, state.player.gold - penalty);
   }

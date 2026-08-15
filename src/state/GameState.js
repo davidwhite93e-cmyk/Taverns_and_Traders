@@ -1,30 +1,24 @@
 import { loadCities } from '../world/world.js';
-import { startingVessel } from '../world/vessels.js';
 import { loadGoods } from '../economy/goods.js';
 import { createMarket } from '../economy/market.js';
-import { createInitialReputation } from '../factions/reputation.js';
+import { createInitialReputation } from '../guilds/reputation.js';
+import { buildPlayer, raceReputationStart } from '../character/createCharacter.js';
 
 const SAVE_KEY = 'wayfarers-ledger-save';
-const STARTING_GOLD = 150;
 
-export function createNewGame(playerName) {
+export function createNewGame(playerName, raceId, classId) {
   const cities = loadCities();
   const goods = loadGoods();
   const startCity = cities.find((c) => c.isStartCity) || cities[0];
 
   return {
-    player: {
-      name: playerName || 'Wayfarer',
-      gold: STARTING_GOLD,
-      cargo: {},
-      vesselId: startingVessel().id,
-      combat: { baseAttack: 6, baseDefense: 4, hp: 30, maxHp: 30, escorts: 0 },
-    },
+    player: buildPlayer(playerName, raceId, classId),
     currentCityId: startCity.id,
     daysElapsed: 0,
     market: createMarket(cities, goods),
-    reputation: createInitialReputation(),
+    reputation: createInitialReputation(raceReputationStart(raceId)),
     completedQuests: [],
+    achievedEnding: null,
   };
 }
 

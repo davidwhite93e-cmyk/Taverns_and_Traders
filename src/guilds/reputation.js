@@ -1,17 +1,24 @@
-import factionsData from '../data/factions.json';
+import guildsData from '../data/guilds.json';
 
 const MIN_REPUTATION = -100;
 const MAX_REPUTATION = 100;
 
-export function loadFactions() {
-  return factionsData;
+export function loadGuilds() {
+  return guildsData;
 }
 
-export function createInitialReputation() {
+export function getGuild(guildId) {
+  const guild = guildsData.find((g) => g.id === guildId);
+  if (!guild) throw new Error(`Unknown guild: ${guildId}`);
+  return guild;
+}
+
+/** raceReputationStart is the {guildId: bonus} bonus map from the chosen race, if any. */
+export function createInitialReputation(raceReputationStart = {}) {
   const reputation = {};
-  for (const faction of factionsData) {
-    if (faction.id === 'unaligned') continue;
-    reputation[faction.id] = faction.startingReputation;
+  for (const guild of guildsData) {
+    const base = guild.startingReputation + (raceReputationStart[guild.id] || 0);
+    reputation[guild.id] = clampReputation(base);
   }
   return reputation;
 }
@@ -20,12 +27,12 @@ export function clampReputation(value) {
   return Math.max(MIN_REPUTATION, Math.min(MAX_REPUTATION, value));
 }
 
-export function getReputation(state, factionId) {
-  return state.reputation[factionId] ?? 0;
+export function getReputation(state, guildId) {
+  return state.reputation[guildId] ?? 0;
 }
 
-export function adjustReputation(state, factionId, delta) {
-  const next = clampReputation(getReputation(state, factionId) + delta);
-  state.reputation[factionId] = next;
+export function adjustReputation(state, guildId, delta) {
+  const next = clampReputation(getReputation(state, guildId) + delta);
+  state.reputation[guildId] = next;
   return next;
 }
