@@ -1,0 +1,26 @@
+[
+  {
+    "id": "arcane_bolt",
+    "name": "Arcane Bolt",
+    "type": "damage",
+    "manaCost": 8,
+    "description": "A bolt of raw force. Deals a burst of extra damage this round.",
+    "effect": { "bonusDamage": 14 }
+  },
+  {
+    "id": "warding_aegis",
+    "name": "Warding Aegis",
+    "type": "shield",
+    "manaCost": 10,
+    "description": "A shimmering ward that blunts the next several blows.",
+    "effect": { "defenseBonus": 10, "durationRounds": 3 }
+  },
+  {
+    "id": "hastened_retreat",
+    "name": "Hastened Retreat",
+    "type": "utility",
+    "manaCost": 6,
+    "description": "A burst of speed magic. Guarantees your next attempt to flee succeeds.",
+    "effect": { "guaranteedFlee": true }
+  }
+]

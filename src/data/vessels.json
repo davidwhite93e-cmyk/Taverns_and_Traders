@@ -1,0 +1,79 @@
+[
+  {
+    "id": "worn_boots",
+    "name": "Worn Boots",
+    "description": "Your own two feet and whatever you can sling over your shoulders. Slow, undefended, but it costs nothing.",
+    "cost": 0,
+    "cargoCapacity": 10,
+    "speed": 1,
+    "defenseRating": 0,
+    "allowedRouteTypes": ["land"],
+    "requiresAnyOf": []
+  },
+  {
+    "id": "horse",
+    "name": "Horse",
+    "description": "Fast and light. Covers ground quickly but there's only so much you can strap to a saddle.",
+    "cost": 150,
+    "cargoCapacity": 18,
+    "speed": 2,
+    "defenseRating": 1,
+    "allowedRouteTypes": ["land"],
+    "requiresAnyOf": ["worn_boots"]
+  },
+  {
+    "id": "hand_cart",
+    "name": "Hand Cart",
+    "description": "Slower than a horse, but it carries far more than your own back ever could.",
+    "cost": 90,
+    "cargoCapacity": 42,
+    "speed": 0.85,
+    "defenseRating": 0,
+    "allowedRouteTypes": ["land"],
+    "requiresAnyOf": ["worn_boots"]
+  },
+  {
+    "id": "horse_cart",
+    "name": "Horse Cart",
+    "description": "Real cargo volume behind real speed. A wagon proper, capable of coastal roads a cart alone couldn't manage.",
+    "cost": 420,
+    "cargoCapacity": 75,
+    "speed": 1.7,
+    "defenseRating": 2,
+    "allowedRouteTypes": ["land", "coastal"],
+    "requiresAnyOf": ["horse", "hand_cart"]
+  },
+  {
+    "id": "covered_wagon",
+    "name": "Covered Wagon",
+    "description": "A canvas-topped wagon that keeps cargo dry and adds a real hold's worth of capacity.",
+    "cost": 950,
+    "cargoCapacity": 150,
+    "speed": 1.9,
+    "defenseRating": 4,
+    "allowedRouteTypes": ["land", "coastal"],
+    "requiresAnyOf": ["horse_cart"]
+  },
+  {
+    "id": "armored_wagon",
+    "name": "Armored Wagon",
+    "description": "Iron-plated sides and a reinforced frame. Slower to accelerate, much harder to rob.",
+    "cost": 1800,
+    "cargoCapacity": 220,
+    "speed": 1.8,
+    "defenseRating": 8,
+    "allowedRouteTypes": ["land", "coastal"],
+    "requiresAnyOf": ["covered_wagon"]
+  },
+  {
+    "id": "land_ship",
+    "name": "Land-Ship",
+    "description": "An engineered marvel of sail, wheel, and ward-iron. The mark of a wayfarer who has truly arrived — and the safest, fastest, roomiest thing on any road.",
+    "cost": 5000,
+    "cargoCapacity": 400,
+    "speed": 3,
+    "defenseRating": 14,
+    "allowedRouteTypes": ["land", "coastal"],
+    "requiresAnyOf": ["armored_wagon"]
+  }
+]

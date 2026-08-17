@@ -1,0 +1,46 @@
+[
+  {
+    "id": "enforcers",
+    "name": "The Enforcers",
+    "tagline": "Order on the road, whatever it costs.",
+    "difficulty": "hard",
+    "alignment": "lawful",
+    "description": "Lawful order-keepers who patrol the trade roads and answer to the chartered cities. The Enforcers pay well for loyal work and unlock safer routes and toll discounts for those who earn their trust, but their final commission asks a wayfarer to face down a warlord's whole horde.",
+    "rivalOf": "outlaws",
+    "startingReputation": 0,
+    "sigil": "a bronze roadmark within a broken chain"
+  },
+  {
+    "id": "outlaws",
+    "name": "The Outlaws",
+    "tagline": "No toll but the one the road itself collects.",
+    "difficulty": "easy",
+    "alignment": "lawless",
+    "description": "A loose confederation of smugglers, fences, and hideout-runners who profit wherever the Enforcers' reach falls short. Free-spirited and quick to reward daring, though their final commission means racing to stop a weapon built specifically to end them.",
+    "rivalOf": "enforcers",
+    "startingReputation": 0,
+    "sigil": "a black lantern with no flame"
+  },
+  {
+    "id": "mercenaries",
+    "name": "The Mercenaries",
+    "tagline": "Coin decides which side you're on.",
+    "difficulty": "medium",
+    "alignment": "neutral",
+    "description": "A contract-driven company with no real allegiance, fighting for whoever pays. Straightforward, combat-focused work with straightforward rewards, capped by a final commission that's nothing more or less than a duel for the title of strongest blade-for-hire.",
+    "rivalOf": "arcane_order",
+    "startingReputation": 0,
+    "sigil": "two crossed spears over a coin"
+  },
+  {
+    "id": "arcane_order",
+    "name": "The Order of the Arcane",
+    "tagline": "What sleeps in the wild places should stay asleep.",
+    "difficulty": "medium-hard",
+    "alignment": "scholarly",
+    "description": "Scholars and battle-mages who investigate magical threats other guilds would rather ignore. Rewarding for spell-focused wayfarers, and its final commission is exactly as dangerous as it sounds: something ancient has woken in the deep wilds, and someone has to answer for it.",
+    "rivalOf": "mercenaries",
+    "startingReputation": 0,
+    "sigil": "an open eye inside a spiral of stars"
+  }
+]

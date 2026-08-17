@@ -1,0 +1,73 @@
+[
+  {
+    "id": "human",
+    "name": "Human",
+    "description": "No particular gift, no particular weakness — humans make up most of the merchant houses on the road for a reason.",
+    "modifiers": {
+      "tradeDiscount": 0.05,
+      "attackBonus": 0,
+      "defenseBonus": 0,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 0
+    },
+    "guildReputationStart": {}
+  },
+  {
+    "id": "dwarf",
+    "name": "Dwarf",
+    "description": "Stout, armor-minded, and hard to knock off a wagon seat. Dwarven caravans favor iron over speed.",
+    "modifiers": {
+      "tradeDiscount": 0,
+      "attackBonus": 2,
+      "defenseBonus": 4,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 0,
+      "armoredVesselDiscount": 0.15
+    },
+    "guildReputationStart": {}
+  },
+  {
+    "id": "elf",
+    "name": "Elf",
+    "description": "Quick on the road and quicker to notice trouble before it notices you. Well regarded by the Order of the Arcane.",
+    "modifiers": {
+      "tradeDiscount": 0,
+      "attackBonus": 0,
+      "defenseBonus": 0,
+      "speedMultiplier": 1.15,
+      "ambushAvoidance": 0.15,
+      "cargoBonus": 0
+    },
+    "guildReputationStart": { "arcane_order": 10 }
+  },
+  {
+    "id": "half_orc",
+    "name": "Half-Orc",
+    "description": "Raised as much on the frontier as in any city. Hits hard, and the Enforcers never quite trust that.",
+    "modifiers": {
+      "tradeDiscount": 0,
+      "attackBonus": 5,
+      "defenseBonus": 1,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0,
+      "cargoBonus": 0
+    },
+    "guildReputationStart": { "enforcers": -10, "outlaws": 5, "mercenaries": 5 }
+  },
+  {
+    "id": "halfling",
+    "name": "Halfling",
+    "description": "Small, light-footed, and able to pack a cart like nobody's business. Not built for a straight fight.",
+    "modifiers": {
+      "tradeDiscount": 0,
+      "attackBonus": -2,
+      "defenseBonus": 0,
+      "speedMultiplier": 1,
+      "ambushAvoidance": 0.1,
+      "cargoBonus": 8
+    },
+    "guildReputationStart": {}
+  }
+]

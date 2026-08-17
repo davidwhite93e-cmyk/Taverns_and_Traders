@@ -1,0 +1,20 @@
+{
+  "name": "wayfarers-ledger",
+  "version": "0.1.0",
+  "description": "An original open-world trading RPG: travel between frontier cities, buy low and sell high, build a caravan, and choose a faction on the road to one of several endings.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "eslint": "^9.13.0",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.4"
+  }
+}

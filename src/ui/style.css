@@ -1,0 +1,385 @@
+/* Visual style guide (see docs/DESIGN.md "Visual style guide" for the
+   canonical reference) — earthy/parchment palette: a dark-wood shell around
+   parchment-colored panels, sepia ink text, gold-leaf accents. No external
+   fonts are fetched (self-contained for the eventual Android/WebView
+   build); period heading feel comes from letter-spacing/small-caps/shadow
+   on a system serif stack rather than a bundled display font. */
+
+:root {
+  --bg: #1c130c;
+  --panel: #ecdfc0;
+  --panel-alt: #e2d1a4;
+  --panel-border: #8a6a3f;
+  --text: #2b1d10;
+  --text-dim: #6b5738;
+  --accent: #a8791f;
+  --accent-strong: #7a4a12;
+  --danger: #7a2f22;
+  --success: #4f6b3a;
+  font-family: 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+#app {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+#game-canvas {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  background: var(--bg);
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+#ui-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel {
+  background: var(--panel);
+  background-image: radial-gradient(ellipse at top left, rgba(255, 250, 230, 0.35), transparent 60%);
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  padding: 16px;
+  box-shadow: inset 0 0 0 1px rgba(138, 106, 63, 0.25);
+  color: var(--text);
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  color: var(--accent-strong);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid rgba(138, 106, 63, 0.4);
+  padding-bottom: 6px;
+}
+
+h1 {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 0 rgba(255, 250, 230, 0.5);
+}
+
+.subtle {
+  color: var(--text-dim);
+  font-size: 0.9em;
+}
+
+button {
+  font-family: inherit;
+  font-size: 1em;
+  background: var(--panel-alt);
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  padding: 10px 16px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: #ead9ab;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+input[type='text'], input[type='number'] {
+  font-family: inherit;
+  font-size: 1em;
+  background: #f4ead0;
+  color: var(--text);
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  padding: 6px 8px;
+  min-height: 44px;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(138, 106, 63, 0.35);
+}
+
+th {
+  color: var(--accent-strong);
+  font-variant: small-caps;
+  letter-spacing: 0.02em;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row.spread {
+  justify-content: space-between;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  background: var(--panel-alt);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+}
+
+.badge.produce {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.badge.demand {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+
+.city-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.city-list button {
+  text-align: left;
+}
+
+.log {
+  max-height: 220px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+  background: #f4ead0;
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  padding: 8px;
+  color: var(--text);
+}
+
+.hp-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: #cbb98c;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+.hp-bar-fill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.35s ease;
+}
+
+.hp-bar-fill.enemy {
+  background: var(--danger);
+}
+
+.combat-box {
+  position: relative;
+}
+
+.combat-panel {
+  position: relative;
+}
+
+@keyframes dmg-float {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(-50%, -6px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -34px) scale(1);
+  }
+}
+
+.dmg-number {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  transform: translate(-50%, 0);
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--danger);
+  text-shadow: 0 1px 0 rgba(255, 250, 230, 0.6);
+  pointer-events: none;
+  animation: dmg-float 0.9s ease-out forwards;
+  white-space: nowrap;
+}
+
+.dmg-number.heal {
+  color: var(--success);
+}
+
+.dmg-number.crit {
+  color: var(--accent-strong);
+  font-size: 1.5em;
+}
+
+@keyframes panel-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes panel-shake-strong {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-10px); }
+  30% { transform: translateX(8px); }
+  45% { transform: translateX(-8px); }
+  60% { transform: translateX(6px); }
+  75% { transform: translateX(-4px); }
+  90% { transform: translateX(3px); }
+}
+
+.combat-panel.shake {
+  animation: panel-shake 0.3s ease;
+}
+
+.combat-panel.shake-strong {
+  animation: panel-shake-strong 0.4s ease;
+}
+
+@keyframes crit-flash {
+  0% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.crit-flash-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 3px;
+  animation: crit-flash 0.35s ease-out forwards;
+}
+
+.pick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.pick-card {
+  text-align: left;
+  padding: 10px;
+  height: auto;
+  white-space: normal;
+  border-width: 1px;
+}
+
+.pick-card.selected {
+  border-color: var(--accent);
+  background: #ead9ab;
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.pick-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent-strong);
+}
+
+.rep-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.rep-bar {
+  height: 12px;
+  border-radius: 6px;
+  background: #cbb98c;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  position: relative;
+}
+
+.rep-bar-fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.rep-bar-mid {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(43, 29, 16, 0.35);
+}
+
+.quest-card {
+  padding: 10px;
+  border: 1px solid var(--panel-border);
+  border-radius: 3px;
+  margin-top: 8px;
+  background: rgba(255, 250, 230, 0.3);
+}
+
+.quest-card.final {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px rgba(168, 121, 31, 0.35);
+}
+
+.quest-card.locked {
+  opacity: 0.6;
+}
+
+.sigil {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}

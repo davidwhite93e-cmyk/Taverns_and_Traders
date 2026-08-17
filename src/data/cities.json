@@ -1,0 +1,190 @@
+[
+  {
+    "id": "millhaven",
+    "name": "Millhaven",
+    "region": "verdant_reach",
+    "x": 120,
+    "y": 340,
+    "description": "A river-mill town of granaries and cooperages, and the traditional starting point for wayfarers new to the roads.",
+    "produces": ["grain", "tanned_hide"],
+    "demands": ["iron_ore", "salt"],
+    "guildPresence": { "enforcers": 55, "outlaws": 15, "mercenaries": 20, "arcane_order": 10 },
+    "isStartCity": true
+  },
+  {
+    "id": "oakstead",
+    "name": "Oakstead",
+    "region": "verdant_reach",
+    "x": 220,
+    "y": 260,
+    "description": "A timber and weaving town spread along the eaves of an old forest.",
+    "produces": ["dyed_wool", "tanned_hide"],
+    "demands": ["iron_ore", "whetstone"],
+    "guildPresence": { "enforcers": 60, "outlaws": 10, "mercenaries": 20, "arcane_order": 10 }
+  },
+  {
+    "id": "thornwick",
+    "name": "Thornwick",
+    "region": "verdant_reach",
+    "x": 90,
+    "y": 220,
+    "description": "A walled market town that hosts a regional Enforcer garrison.",
+    "produces": ["grain", "malted_barley"],
+    "demands": ["copper_ingot", "amber_resin"],
+    "guildPresence": { "enforcers": 75, "outlaws": 5, "mercenaries": 15, "arcane_order": 5 }
+  },
+  {
+    "id": "greyfield",
+    "name": "Greyfield",
+    "region": "verdant_reach",
+    "x": 200,
+    "y": 400,
+    "description": "Rolling farmland dotted with granaries, quiet but for harvest season.",
+    "produces": ["grain", "dyed_wool"],
+    "demands": ["salt", "smoked_fish"],
+    "guildPresence": { "enforcers": 50, "outlaws": 20, "mercenaries": 20, "arcane_order": 10 }
+  },
+  {
+    "id": "duskrun",
+    "name": "Duskrun",
+    "region": "ashen_steppe",
+    "x": 420,
+    "y": 150,
+    "description": "A dust-blown waystation where independent traders deal far from any Enforcer garrison.",
+    "produces": ["iron_ore", "whetstone"],
+    "demands": ["grain", "dyed_wool"],
+    "guildPresence": { "enforcers": 10, "outlaws": 65, "mercenaries": 20, "arcane_order": 5 }
+  },
+  {
+    "id": "cinderhold",
+    "name": "Cinderhold",
+    "region": "ashen_steppe",
+    "x": 520,
+    "y": 100,
+    "description": "A fortified steppe outpost built around a smelting works, favored by the Outlaws as a supply depot.",
+    "produces": ["iron_ore", "copper_ingot"],
+    "demands": ["grain", "malted_barley"],
+    "guildPresence": { "enforcers": 5, "outlaws": 70, "mercenaries": 20, "arcane_order": 5 }
+  },
+  {
+    "id": "redgate",
+    "name": "Redgate",
+    "region": "ashen_steppe",
+    "x": 460,
+    "y": 220,
+    "description": "A canyon-mouth trading post known for its whetstone quarries and its lack of anyone's law.",
+    "produces": ["whetstone", "iron_ore"],
+    "demands": ["dyed_wool", "amber_resin"],
+    "guildPresence": { "enforcers": 8, "outlaws": 60, "mercenaries": 25, "arcane_order": 7 }
+  },
+  {
+    "id": "saltmere",
+    "name": "Saltmere",
+    "region": "saltmere_coast",
+    "x": 150,
+    "y": 520,
+    "description": "A bustling harbor city and the largest neutral trade hub on the reach, courted by every guild in the land.",
+    "produces": ["salt", "smoked_fish"],
+    "demands": ["iron_ore", "copper_ingot"],
+    "guildPresence": { "enforcers": 30, "outlaws": 20, "mercenaries": 30, "arcane_order": 20 }
+  },
+  {
+    "id": "tidewatch",
+    "name": "Tidewatch",
+    "region": "saltmere_coast",
+    "x": 260,
+    "y": 560,
+    "description": "A lighthouse town whose pearl divers supply luxury markets up and down the coast.",
+    "produces": ["river_pearls", "smoked_fish"],
+    "demands": ["grain", "whetstone"],
+    "guildPresence": { "enforcers": 25, "outlaws": 20, "mercenaries": 25, "arcane_order": 30 }
+  },
+  {
+    "id": "farrows_landing",
+    "name": "Farrow's Landing",
+    "region": "saltmere_coast",
+    "x": 60,
+    "y": 480,
+    "description": "A modest fishing port with a growing appetite for inland goods.",
+    "produces": ["smoked_fish", "salt"],
+    "demands": ["grain", "peat_bricks"],
+    "guildPresence": { "enforcers": 25, "outlaws": 30, "mercenaries": 25, "arcane_order": 20 }
+  },
+  {
+    "id": "brinewick",
+    "name": "Brinewick",
+    "region": "saltmere_coast",
+    "x": 340,
+    "y": 500,
+    "description": "A salt-pan town where Enforcer customs skiffs try, not always successfully, to police coastal smuggling.",
+    "produces": ["salt", "river_pearls"],
+    "demands": ["copper_ingot", "malted_barley"],
+    "guildPresence": { "enforcers": 40, "outlaws": 30, "mercenaries": 20, "arcane_order": 10 }
+  },
+  {
+    "id": "ironspire",
+    "name": "Ironspire",
+    "region": "ironspire_highlands",
+    "x": 640,
+    "y": 260,
+    "description": "A vast terraced mining city built into the flank of the Ironspire massif, seat of Enforcer industry.",
+    "produces": ["iron_ore", "copper_ingot"],
+    "demands": ["grain", "smoked_fish"],
+    "guildPresence": { "enforcers": 65, "outlaws": 15, "mercenaries": 15, "arcane_order": 5 }
+  },
+  {
+    "id": "copperfall",
+    "name": "Copperfall",
+    "region": "ironspire_highlands",
+    "x": 700,
+    "y": 350,
+    "description": "A smelting town beneath a waterfall of the same name, known for its fine ingot work.",
+    "produces": ["copper_ingot", "whetstone"],
+    "demands": ["grain", "dyed_wool"],
+    "guildPresence": { "enforcers": 60, "outlaws": 20, "mercenaries": 15, "arcane_order": 5 }
+  },
+  {
+    "id": "hollowpeak",
+    "name": "Hollowpeak",
+    "region": "ironspire_highlands",
+    "x": 610,
+    "y": 400,
+    "description": "A high mountain pass town, the last reliable stop before the eastern trade routes, and near enough to old ruins to draw the Order's attention.",
+    "produces": ["whetstone", "iron_ore"],
+    "demands": ["salt", "amber_resin"],
+    "guildPresence": { "enforcers": 55, "outlaws": 20, "mercenaries": 15, "arcane_order": 10 }
+  },
+  {
+    "id": "mossport",
+    "name": "Mossport",
+    "region": "fenlands",
+    "x": 380,
+    "y": 470,
+    "description": "A stilt-built fen town where peat cutters and resin gatherers ship their goods downriver, mostly out of anyone's sight.",
+    "produces": ["peat_bricks", "amber_resin"],
+    "demands": ["copper_ingot", "whetstone"],
+    "guildPresence": { "enforcers": 15, "outlaws": 55, "mercenaries": 15, "arcane_order": 15 }
+  },
+  {
+    "id": "reedwick",
+    "name": "Reedwick",
+    "region": "fenlands",
+    "x": 460,
+    "y": 520,
+    "description": "A brewing town famous for its malted barley, hidden deep in the reed channels.",
+    "produces": ["malted_barley", "peat_bricks"],
+    "demands": ["iron_ore", "salt"],
+    "guildPresence": { "enforcers": 20, "outlaws": 50, "mercenaries": 15, "arcane_order": 15 }
+  },
+  {
+    "id": "blackfen",
+    "name": "Blackfen",
+    "region": "fenlands",
+    "x": 400,
+    "y": 380,
+    "description": "A remote fen outpost near ruins old enough that the Order keeps a standing watch on them, when it can afford to.",
+    "produces": ["amber_resin", "peat_bricks"],
+    "demands": ["copper_ingot", "dyed_wool"],
+    "guildPresence": { "enforcers": 10, "outlaws": 55, "mercenaries": 15, "arcane_order": 20 }
+  }
+]
